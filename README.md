@@ -68,7 +68,12 @@ Dibuat dengan ❤️ oleh abekz the programmer
    ```bash
 	php spark serve
 
-5. **User Demo**
+5. **Finalisasi Database**
+```bash
+php spark migrate
+php spark db:seed UserSeeder
+
+6. **User Demo**
 ```bash
 email : admin@example.com 
 password : 123456 
