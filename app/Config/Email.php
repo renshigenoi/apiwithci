@@ -18,39 +18,32 @@ class Email extends BaseConfig
     /**
      * The mail sending protocol: mail, sendmail, smtp
      */
-    public string $protocol = 'smtp';
+    public string $protocol = 'mail';
 
     /**
      * The server path to Sendmail.
      */
-    // sendmail_path = "C:\\laragon\\bin\\sendmail\\sendmail.exe -t"
-    // public string $mailPath = '/usr/sbin/sendmail';
-    public string $mailPath = 'D:\\laragon\\bin\\sendmail\\sendmail.exe -t';
+    public string $mailPath = '/usr/sbin/sendmail';
 
     /**
      * SMTP Server Hostname
      */
-    public string $SMTPHost = 'smtp.gmail.com';
-
-    /**
-     * Which SMTP authentication method to use: login, plain
-     */
-    public string $SMTPAuthMethod = 'login';
+    public string $SMTPHost = '';
 
     /**
      * SMTP Username
      */
-    public string $SMTPUser = 'renshigenoi@gmail.com';
+    public string $SMTPUser = '';
 
     /**
      * SMTP Password
      */
-    public string $SMTPPass = 'zzwszlivisyudrkw';
+    public string $SMTPPass = '';
 
     /**
      * SMTP Port
      */
-    public int $SMTPPort = 587;
+    public int $SMTPPort = 25;
 
     /**
      * SMTP Timeout (in seconds)
@@ -84,7 +77,7 @@ class Email extends BaseConfig
     /**
      * Type of mail, either 'text' or 'html'
      */
-    public string $mailType = 'html';
+    public string $mailType = 'text';
 
     /**
      * Character set (utf-8, iso-8859-1, etc.)
