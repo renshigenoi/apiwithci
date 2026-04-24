@@ -7,6 +7,7 @@ Dashboard untuk memantau traffic API, log harian, dan distribusi request user se
 * Dark Mode support.
 * Email Notification (SMTP via Gmail).
 * Auth System (Admin & Staff roles).
+* Notifikasi menggunakan Slack dan Telegram
 
 ## Prasyarat (Prerequisites)
 Pastikan server Anda memenuhi spesifikasi berikut:
