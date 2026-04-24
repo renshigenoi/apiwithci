@@ -35,11 +35,11 @@ Sebelum menjalankan proyek ini, pastikan perangkat Anda terinstall:
 git clone [https://github.com/renshigenoi/apiwithci.git](https://github.com/renshigenoi/apiwithci.git)
 cd apiwithci
 
-2. **Install Library (Vendor)**
+### 2. **Install Library (Vendor)**
 ```bash
 composer install
 
-3. **Konfigurasi Environment**
+### 3. **Konfigurasi Environment**
 ```bash
 cp env .env
 
@@ -48,13 +48,23 @@ Database: database.default.hostname, database.default.database, dll.
 Email: Masukkan SMTPUser dan SMTPPass (App Password Gmail) Anda.
 App: app.baseURL = 'http://localhost:8080/'
 
-4. **Setup Database**
+### 4. **Setup Database**
 ```bash
 php spark migrate
 
-5. **Jalankan Aplikasi**
+### 5. **Jalankan Aplikasi**
 ```bash
 php spark serve
+
+### 5. **User Akses**
+```bash
+email : admin@example.com 
+password : 123456 
+
+email : staff@example.com
+password : 123456 
+
+---
 
 ## 📂 Struktur Folder Penting
 - app/Config: Tempat konfigurasi aplikasi (Email, Database, dll).
@@ -63,8 +73,12 @@ php spark serve
 - public/: Aset publik (CSS, JS, Images).
 - writable/: Folder penyimpanan log, cache, dan session (Pastikan permission 775/777 di hosting).
 
+---
+
 ## 🤝 Kontribusi
 Ini adalah proyek terbuka untuk pembelajaran. Jika Anda menemukan bug atau ingin menambah fitur, silakan buat Pull Request atau buka Issue.
+
+---
 
 ## 📄 Lisensi
 Proyek ini di bawah lisensi MIT - bebas digunakan untuk pembelajaran.
