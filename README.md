@@ -67,3 +67,11 @@ Dibuat dengan ❤️ oleh abekz the programmer
 4. **Jalankan Aplikasi**
    ```bash
 	php spark serve
+
+5. **User Demo**
+```bash
+email : admin@example.com 
+password : 123456 
+
+email : staff@example.com
+password : 123456 
