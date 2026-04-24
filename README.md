@@ -24,6 +24,9 @@ Pastikan server Anda memenuhi spesifikasi berikut:
 2. **Install Vendor**
 	composer install
 
-3. **Konfigurasi Environment
-	copy env .env
+3. **Konfigurasi Environment**
+	cp env .env
 	-- and tailor for your app, specifically the baseURL and any database settings.
+
+4. **Jalankan Aplikasi**
+	php spark serve
