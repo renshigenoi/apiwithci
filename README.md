@@ -22,10 +22,13 @@ Pastikan server Anda memenuhi spesifikasi berikut:
    cd apiwithci
 
 2. **Install Library (Vendor)**
+   ```bash
 	composer install
 
 3. **Konfigurasi Environment**
+   ```bash
 	cp env .env
 
 4. **Jalankan Aplikasi**
+   ```bash
 	php spark serve
