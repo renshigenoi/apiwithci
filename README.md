@@ -21,12 +21,11 @@ Pastikan server Anda memenuhi spesifikasi berikut:
    git clone [https://github.com/renshigenoi/apiwithci.git](https://github.com/renshigenoi/apiwithci.git)
    cd apiwithci
 
-2. **Install Vendor**
+2. **Install Library (Vendor)**
 	composer install
 
 3. **Konfigurasi Environment**
 	cp env .env
-	-- and tailor for your app, specifically the baseURL and any database settings.
 
 4. **Jalankan Aplikasi**
 	php spark serve
