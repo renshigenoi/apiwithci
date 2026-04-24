@@ -28,44 +28,6 @@ Sebelum menjalankan proyek ini, pastikan perangkat Anda terinstall:
 
 ---
 
-## 🚀 Panduan Instalasi
-
-### 1. Clone Repository
-```bash
-git clone [https://github.com/renshigenoi/apiwithci.git](https://github.com/renshigenoi/apiwithci.git)
-cd apiwithci
-
-### 2. **Install Library (Vendor)**
-```bash
-composer install
-
-### 3. **Konfigurasi Environment**
-```bash
-cp env .env
-
-Buka file .env, lalu sesuaikan bagian berikut:
-Database: database.default.hostname, database.default.database, dll.
-Email: Masukkan SMTPUser dan SMTPPass (App Password Gmail) Anda.
-App: app.baseURL = 'http://localhost:8080/'
-
-### 4. **Setup Database**
-```bash
-php spark migrate
-
-### 5. **Jalankan Aplikasi**
-```bash
-php spark serve
-
-### 5. **User Akses**
-```bash
-email : admin@example.com 
-password : 123456 
-
-email : staff@example.com
-password : 123456 
-
----
-
 ## 📂 Struktur Folder Penting
 - app/Config: Tempat konfigurasi aplikasi (Email, Database, dll).
 - app/Controllers: Logika utama dashboard.
@@ -84,3 +46,41 @@ Ini adalah proyek terbuka untuk pembelajaran. Jika Anda menemukan bug atau ingin
 Proyek ini di bawah lisensi MIT - bebas digunakan untuk pembelajaran.
 
 Dibuat dengan ❤️ oleh abekz the programmer
+
+---
+
+## 🚀 Panduan Instalasi
+
+### 1. Clone Repository
+```bash
+git clone [https://github.com/renshigenoi/apiwithci.git](https://github.com/renshigenoi/apiwithci.git)
+cd apiwithci
+
+2. **Install Library (Vendor)**
+```bash
+composer install
+
+3. **Konfigurasi Environment**
+```bash
+cp env .env
+
+Buka file .env, lalu sesuaikan bagian berikut:
+Database: database.default.hostname, database.default.database, dll.
+Email: Masukkan SMTPUser dan SMTPPass (App Password Gmail) Anda.
+App: app.baseURL = 'http://localhost:8080/'
+
+4. **Setup Database**
+```bash
+php spark migrate
+
+5. **Jalankan Aplikasi**
+```bash
+php spark serve
+
+5. **User Akses**
+```bash
+email : admin@example.com 
+password : 123456 
+
+email : staff@example.com
+password : 123456 
