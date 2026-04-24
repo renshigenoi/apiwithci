@@ -64,18 +64,18 @@ Dibuat dengan ❤️ oleh abekz the programmer
    ```bash
 	cp env .env
 
-4. **Jalankan Aplikasi**
+4. **Finalisasi Database**
+	```bash
+	php spark migrate
+	php spark db:seed UserSeeder
+
+	User Demo
+	email : admin@example.com 
+	password : 123456 
+
+	email : staff@example.com
+	password : 123456 
+
+5. **Jalankan Aplikasi**
    ```bash
 	php spark serve
-
-5. **Finalisasi Database**
-```bash
-php spark migrate
-php spark db:seed UserSeeder
-
-User Demo
-email : admin@example.com 
-password : 123456 
-
-email : staff@example.com
-password : 123456 
