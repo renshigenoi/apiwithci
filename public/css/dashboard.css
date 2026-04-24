@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+/* --- 1. CORE STABILITY --- */
+body { 
+    font-family: 'Plus Jakarta Sans', sans-serif; 
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Transisi halus */
+*:not(input):not(textarea) {
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* --- 2. DARK MODE FIX (Wajib di Atas agar Stabil) --- */
+html.dark body {
+    background-color: #0f172a !important; /* Biru Navy Gelap */
+    color: #f1f5f9 !important;
+}
+
+html.dark .bg-white { background-color: #1e293b !important; border-color: #334155 !important; }
+html.dark .bg-gray-50 { background-color: #0f172a !important; }
+
+/* --- 3. TABLE RESPONSIVE & SCROLLBAR --- */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
+}
+
+/* Scrollbar Indikator Biru */
+.table-responsive::-webkit-scrollbar { height: 6px; }
+.table-responsive::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
+html.dark .table-responsive::-webkit-scrollbar-track { background: #1e293b; }
+.table-responsive::-webkit-scrollbar-thumb { 
+    background: #3b82f6 !important; 
+    border-radius: 10px; 
+}
+
+/* --- 4. TABLE STYLING (Light & Dark) --- */
+
+/* Base Table */
+table { border-collapse: collapse !important; width: 100%; }
+
+/* Header Fix */
+thead {
+    background-color: #f8fafc !important; /* Slate 50 */
+}
+html.dark thead {
+    background-color: #020617 !important; /* Navy sangat gelap */
+}
+
+thead th {
+    @apply uppercase text-[11px] font-extrabold tracking-widest px-6 py-4;
+    color: #64748b !important; /* Slate 500 */
+}
+html.dark thead th {
+    color: #94a3b8 !important; /* Slate 400 */
+}
+
+/* Border Control (Mencegah garis double hitam) */
+thead { border-bottom: 1px solid #e2e8f0 !important; }
+html.dark thead { border-bottom: 1px solid #1e293b !important; }
+
+/* Baris Tabel */
+tbody tr {
+    border-bottom: 1px solid #f1f5f9 !important;
+    transition: all 0.2s ease;
+}
+html.dark tbody tr {
+    border-bottom: 1px solid rgba(30, 41, 59, 0.5) !important;
+}
+
+/* Hover Effect */
+tbody tr:hover {
+    background-color: rgba(239, 246, 255, 0.8) !important; /* Light Blue */
+    cursor: pointer;
+}
+html.dark tbody tr:hover {
+    background-color: rgba(30, 41, 59, 0.4) !important; /* Dark Slate */
+}
+
+/* Hilangkan hover di header */
+thead tr:hover { background-color: transparent !important; cursor: default; }
+
+/* Teks & Font */
+table td {
+    @apply px-6 py-4 whitespace-nowrap align-middle;
+    font-size: 0.875rem; /* text-sm */
+}
+
+/* --- 5. OTHERS --- */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.bg-mesh {
+    background-color: #f8fafc;
+    background-image: radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.05) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(37, 99, 235, 0.05) 0px, transparent 50%);
+}
+html.dark .bg-mesh { background-image: none; background-color: #0f172a !important; }
+
+/* Form Inputs */
+input, select, textarea {
+    background-color: #ffffff !important;
+    color: #1e293b !important;
+    border: 1px solid #e2e8f0 !important;
+}
+html.dark input, html.dark select, html.dark textarea {
+    background-color: #1e293b !important;
+    color: #f8fafc !important;
+    border: 1px solid #334155 !important;
+}
+/* Tambahkan ini di bagian akhir CSS yang tadi sudah jalan */
+
+/* Fix Logout Position */
+#header .flex {
+    align-items: center !important;
+}
+
+/* Fix Dark Mode Text Visibility */
+html.dark {
+    color-scheme: dark;
+}
+
+html.dark body {
+    background-color: #0f172a !important;
+    color: #f1f5f9 !important;
+}
+
+/* Override Teks Abu-abu Gelap ke Putih di Dark Mode */
+html.dark .text-gray-900, html.dark .text-slate-900, 
+html.dark .text-gray-800, html.dark .text-slate-800 { color: #f8fafc !important; }
+
+html.dark .text-gray-700, html.dark .text-slate-700,
+html.dark .text-gray-600, html.dark .text-slate-600 { color: #cbd5e1 !important; }
+
+/* Dashboard Cards & Tables */
+html.dark .bg-white { background-color: #1e293b !important; border-color: #334155 !important; }
+html.dark thead { background-color: #020617 !important; border-bottom: 1px solid #334155 !important; }
+
+/* Table Content Specifics */
+html.dark td { color: #cbd5e1 !important; }
+html.dark td strong, html.dark td .font-bold { color: #ffffff !important; }
+
+/* Button Logout Alignment Fix */
+button[onclick="logout()"] {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    vertical-align: middle !important;
+}
+
+#sidebar {
+    height: 100vh !important; /* Paksa tinggi penuh layar */
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.menu-container {
+    flex: 1 1 auto !important; /* Memaksa menu mengambil sisa ruang yang ada */
+    overflow-y: auto;
+}
+
+/* Div pembungkus logout */
+#sidebar > div:last-child {
+    margin-top: auto !important; /* Dorong ke paling bawah sidebar */
+}
+
+/* Memperhalus tampilan elemen CODE secara global di tabel */
+table code {
+    background-color: #f1f5f9 !important; /* Soft Slate */
+    color: #475569 !important; /* Slate 600 */
+    border: 1px solid #e2e8f0 !important;
+}
+
+html.dark table code {
+    background-color: rgba(30, 41, 59, 0.5) !important;
+    color: #cbd5e1 !important;
+    border: 1px solid #334155 !important;
+}
+
+@keyframes slideUp {
+    from { transform: translate(-50%, 100%); opacity: 0; }
+    to { transform: translate(-50%, 0); opacity: 1; }
+}
+#bulkActionBar:not(.hidden) {
+    animation: slideUp 0.3s ease-out forwards;
+}
