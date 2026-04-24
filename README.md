@@ -13,7 +13,7 @@ Aplikasi Dashboard API Log yang dibangun menggunakan **CodeIgniter 4**. Proyek i
 ## ✨ Fitur Utama
 - **📊 Visualisasi Data**: Integrasi Chart.js (Bar, Line, & Doughnut) untuk statistik harian.
 - **🌙 UI/UX Modern**: Mendukung Dark Mode dan desain responsif.
-- **📧 Sistem Email**: Notifikasi otomatis via SMTP Gmail.
+- **📧 Notifikasi**: Notifikasi otomatis via SMTP Gmail, Slack dan Telegram.
 - **🔐 Keamanan**: Konfigurasi sensitif menggunakan file `.env`.
 - **🛠️ Log Management**: Monitoring aktivitas API secara real-time.
 
