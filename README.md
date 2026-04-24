@@ -73,8 +73,7 @@ Dibuat dengan ❤️ oleh abekz the programmer
 php spark migrate
 php spark db:seed UserSeeder
 
-6. **User Demo**
-```bash
+User Demo
 email : admin@example.com 
 password : 123456 
 
