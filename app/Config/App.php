@@ -199,4 +199,6 @@ class App extends BaseConfig
      * @see http://www.w3.org/TR/CSP/
      */
     public bool $CSPEnabled = false;
+
+    public string $jwtSecretKey = 'bb13638625e53b6ef5d9362b1e39c8597120a78e0aa579ad2a87eb64ae6d2ea9';
 }

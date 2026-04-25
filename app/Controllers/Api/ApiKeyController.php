@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Controllers\Api;
 
@@ -8,38 +8,34 @@ use CodeIgniter\Controller; // Bisa tetap pakai Controller biasa
 use CodeIgniter\API\ResponseTrait; // WAJIB TAMBAH INI
 use Config\Services;
 
-class ApiKeyController extends Controller 
+class ApiKeyController extends Controller
 {
     use ResponseTrait; // WAJIB AKTIFKAN DI SINI
 
     public function index()
     {
-        $payload = \Config\Services::jwtPayload()->get();
-        $role    = $payload['role'] ?? 'staff';
-        $email   = $payload['email'] ?? '';
-
-        $model = new \App\Models\ApiKeyModel();
-
-        // Jika admin, tampilkan semua. Jika staff, filter berdasarkan email.
+        $payload    = Services::jwtPayload()->get();
+        $role       = $payload['role'] ?? 'staff';
+        $email      = $payload['email'] ?? '';
+        $model      = new ApiKeyModel();
         if ($role === 'admin') {
-            $data = $model->findAll();
+            $data   = $model->findAll();
         } else {
-            $data = $model->where('user_email', $email)->findAll();
+            $data   = $model->where('user_email', $email)->findAll();
         }
 
         return $this->respond($data);
     }
 
-    public function create() 
+    public function create()
     {
         $model = new ApiKeyModel();
         $json = $this->request->getJSON();
-        
         if (!$json || empty($json->label)) {
             return $this->fail('Label wajib diisi');
         }
 
-        $plainKey = 'api_live_' . bin2hex(random_bytes(20)); 
+        $plainKey = 'api_live_' . bin2hex(random_bytes(20));
         $data = [
             'user_email'   => $json->email,
             'key_label'    => $json->label,
@@ -52,10 +48,9 @@ class ApiKeyController extends Controller
             return $this->respond([
                 'status'  => 200,
                 'message' => 'Key generated successfully',
-                'key'     => $plainKey 
+                'key'     => $plainKey
             ]);
         }
-        
         return $this->fail('Gagal menyimpan ke database');
     }
 
@@ -77,7 +72,7 @@ class ApiKeyController extends Controller
                         ->set(['is_active' => $status])
                         ->update();
         if ($updated) {
-            $payload    = \Config\Services::jwtPayload()->get();
+            $payload    = Services::jwtPayload()->get();
             $userId     = $payload['user_id'] ?? 'staff';
             $userEmail  = $payload['email'] ?? '';
             $items      = $model->whereIn('id', $ids)->select('id, key_label')->findAll();
@@ -102,7 +97,7 @@ class ApiKeyController extends Controller
             ]);
 
             return $this->respond([
-                'success' => true, 
+                'success' => true,
                 'message' => count($ids) . ' API Keys status updated successfully'
             ]);
         }
@@ -111,7 +106,7 @@ class ApiKeyController extends Controller
 
     public function bulkDelete()
     {
-        $payload        = \Config\Services::jwtPayload()->get();
+        $payload        = Services::jwtPayload()->get();
         $userId         = $payload['user_id'] ?? 'staff';
         $userEmail      = $payload['email'] ?? '';
         $json           = $this->request->getJSON();
@@ -126,7 +121,7 @@ class ApiKeyController extends Controller
         }, $items);
         $deleted        = $model->delete($ids); // TRUE jika berhasil
         if ($deleted) {
-            $payload    = \Config\Services::jwtPayload()->get();
+            $payload    = Services::jwtPayload()->get();
             $userId     = $payload['user_id'] ?? 'staff';
             $userEmail  = $payload['email'] ?? '';
 
@@ -156,7 +151,7 @@ class ApiKeyController extends Controller
 
     public function delete($id = null)
     {
-        $payload    = \Config\Services::jwtPayload()->get();
+        $payload    = Services::jwtPayload()->get();
         $role       = $payload['role'] ?? 'staff';
         $email      = $payload['email'] ?? '';
         $model      = new ApiKeyModel();

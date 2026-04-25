@@ -29,6 +29,6 @@ class JwtFilter implements \CodeIgniter\Filters\FilterInterface
     }
 
     public function after(\CodeIgniter\HTTP\RequestInterface $request, \CodeIgniter\HTTP\ResponseInterface $response, $arguments = null) {
-        
+
     }
 }
