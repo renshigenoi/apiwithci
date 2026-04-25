@@ -18,12 +18,18 @@ $routes->group('api/v1', function($routes) {
     $routes->post('forgot-password', 'Api\AuthController::forgotPassword');
     $routes->post('update-password', 'Api\AuthController::updatePassword');
 
-    // Users (dengan JWT + rate limit + log)
     $routes->group('users', ['filter' => ['jwt','ratelimit','log']], function($routes) {
         $routes->get('/', 'Api\UserController::index');
         $routes->post('create', 'Api\UserController::create');
         $routes->put('update/(:num)', 'Api\UserController::update/$1');
         $routes->delete('delete/(:num)', 'Api\UserController::delete/$1');
+    });
+
+    $routes->group('store', ['filter' => ['jwt','ratelimit','log']], function($routes) {
+        $routes->get('/', 'Api\StoreController::index');
+        $routes->post('create', 'Api\StoreController::create');
+        $routes->put('update/(:num)', 'Api\StoreController::update/$1');
+        $routes->delete('delete/(:num)', 'Api\StoreController::delete/$1');
     });
 
     $routes->group('keys', ['filter' => ['jwt','ratelimit','log']], function($routes) {

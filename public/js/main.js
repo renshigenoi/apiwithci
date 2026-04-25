@@ -22,7 +22,7 @@ window.showSection = (id) => {
     }
     // 3. TUTUP SIDEBAR (Mobile)
     if (window.innerWidth < 1024 && typeof toggleSidebar === 'function') {
-        toggleSidebar(true); 
+        toggleSidebar(true);
     }
     // 4. Update UI Menu Aktif
     document.querySelectorAll('.menu-item').forEach(btn => {
@@ -32,7 +32,8 @@ window.showSection = (id) => {
         'dashboardSection': 'menuDashboard',
         'userSection'     : 'menuUser',
         'logsSection'     : 'menuLogs',
-        'APIKeySection'   : 'menuAPIKey'
+        'APIKeySection'   : 'menuAPIKey',
+        'storeSection'    : 'menuStore'
     };
     const activeMenu = document.getElementById(menuMapping[id]);
     if (activeMenu) activeMenu.classList.add('active');
@@ -50,6 +51,9 @@ window.showSection = (id) => {
             break;
         case 'APIKeySection':
             if (typeof window.loadApiKeys === 'function') window.loadApiKeys();
+            break;
+        case 'storeSection':
+            if (typeof window.loadStores === 'function') window.loadStores();
             break;
     }
 };
@@ -75,8 +79,8 @@ function startLiveClock() {
         });
         // Tampilan dengan separator vertikal yang tipis
         clockElement.innerHTML = `
-            ${datePart} 
-            <span class="mx-2 opacity-30">|</span> 
+            ${datePart}
+            <span class="mx-2 opacity-30">|</span>
             <span class="font-mono">${timePart}</span>
         `;
     };

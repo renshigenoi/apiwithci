@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 /* --- 1. CORE STABILITY --- */
-body { 
-    font-family: 'Plus Jakarta Sans', sans-serif; 
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -32,9 +32,9 @@ html.dark .bg-gray-50 { background-color: #0f172a !important; }
 .table-responsive::-webkit-scrollbar { height: 6px; }
 .table-responsive::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
 html.dark .table-responsive::-webkit-scrollbar-track { background: #1e293b; }
-.table-responsive::-webkit-scrollbar-thumb { 
-    background: #3b82f6 !important; 
-    border-radius: 10px; 
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #3b82f6 !important;
+    border-radius: 10px;
 }
 
 /* --- 4. TABLE STYLING (Light & Dark) --- */
@@ -126,7 +126,7 @@ html.dark body {
 }
 
 /* Override Teks Abu-abu Gelap ke Putih di Dark Mode */
-html.dark .text-gray-900, html.dark .text-slate-900, 
+html.dark .text-gray-900, html.dark .text-slate-900,
 html.dark .text-gray-800, html.dark .text-slate-800 { color: #f8fafc !important; }
 
 html.dark .text-gray-700, html.dark .text-slate-700,

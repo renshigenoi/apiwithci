@@ -45,7 +45,7 @@ function decodeJWTFromRequest() {
  * Helper Format Tanggal & Waktu
  * ====================================
  */
-$_MONTH2    = array ( 
+$_MONTH2    = array (
                 "01" => "Jan",
                 "02" => "Feb",
                 "03" => "Mar",
@@ -60,36 +60,25 @@ $_MONTH2    = array (
                 "12" => "Dec"
             );
 
-function format_date($term="", $format="d-M-Y") 
-{ 
+function format_date($term="", $format="d-M-Y") {
     if (!(strpos($term, "-") === false)) {
         $arr_tgl	= explode("-",$term);
         $arr_day	= explode(" ",$arr_tgl[2]);
-        if ($arr_tgl[0] <= "1970" && $format=="d-M-Y") 
-        {
+        if ($arr_tgl[0] <= "1970" && $format=="d-M-Y") {
             return $arr_day[0]."-".$_MONTH2[$arr_tgl[1]]."-".$arr_tgl[0];
-        }
-        elseif ($arr_tgl[0] <= "1970" && $format=="d M") 
-        {
+        } else if ($arr_tgl[0] <= "1970" && $format=="d M") {
             return $arr_day[0]." ".$_MONTH2[$arr_tgl[1]];
-        }
-        else
-        {
+        } else {
             return date($format,strtotime($term));
         }
     } else if (!(strpos($term, "/") === false)) {
         $arr_tgl	= explode("/",$term);
         $arr_day	= explode(" ",$arr_tgl[2]);
-        if ($arr_tgl[0] <= "1970" && $format=="d-M-Y") 
-        {
+        if ($arr_tgl[0] <= "1970" && $format=="d-M-Y") {
             return $arr_day[0]."-".$_MONTH2[$arr_tgl[1]]."-".$arr_tgl[0];
-        }
-        elseif ($arr_tgl[0] <= "1970" && $format=="d M") 
-        {
+        } else if ($arr_tgl[0] <= "1970" && $format=="d M") {
             return $arr_day[0]." ".$_MONTH2[$arr_tgl[1]];
-        }
-        else
-        {
+        } else {
             return date($format,strtotime($term));
         }
     } else {
@@ -97,28 +86,33 @@ function format_date($term="", $format="d-M-Y")
     }
 }
 
-function format_datetime($term="", $format="d-M-Y H:i:s") 
-{ 
+function format_datetime($term="", $format="d-M-Y H:i:s"){
     global $_MONTH2;
-    if (!(strpos($term, "-") === false))
-    {
+    if (!(strpos($term, "-") === false)){
         $arr_tgl	= explode("-",$term);
         $arr_day	= explode(" ",$arr_tgl[2]);
-        if ($arr_tgl[0] <= "1970" && $format=="d-M-Y H:i:s") 
-        {
+        if ($arr_tgl[0] <= "1970" && $format=="d-M-Y H:i:s") {
             return $arr_day[0]."-".$_MONTH2[$arr_tgl[1]]."-".$arr_tgl[0];
-        }
-        elseif ($arr_tgl[0] <= "1970" && $format=="d M H:i:s") 
-        {
+        } else if ($arr_tgl[0] <= "1970" && $format=="d M H:i:s") {
             return $arr_day[0]." ".$_MONTH2[$arr_tgl[1]];
-        }
-        else
-        {
+        } else {
             return date($format,strtotime($term));
         }
-    }
-    else
-    {
+    } else {
         return "&nbsp;";
     }
+}
+
+function generateCode($prefix, $storeName) {
+    // Hapus karakter non-alphanumeric
+    $cleanName = preg_replace('/[^A-Za-z0-9]/', '', strtoupper($storeName));
+    // Jika setelah dibersihkan jadi kosong, kasih fallback "SHOP"
+    if (empty($cleanName)) {
+        $shortName = "SHOP";
+    } else {
+        $shortName = substr($cleanName, 0, 5);
+    }
+    // Gunakan random string yang lebih pasti
+    $random = strtoupper(substr(bin2hex(random_bytes(4)), 0, 4));
+    return $prefix . '-' . $shortName . '-' . $random;
 }

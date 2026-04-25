@@ -13,9 +13,9 @@ class StoreController extends Controller
 
     public function index()
     {
-        $userModel = new UserModel();
+        $storeModel = new StoreModel();
         // Menggunakan respond() lebih ringkas daripada setJSON
-        return $this->respond($userModel->findAll());
+        return $this->respond($storeModel->findAll());
     }
 
     public function update($id)
@@ -26,46 +26,46 @@ class StoreController extends Controller
         }
 
         $json = $this->request->getJSON(true);
-        $userModel = new UserModel();
-        
-        $dataUpdate = [
-            'name'  => $json['name'],
-            'email' => $json['email'],
-            'role'  => $json['role']
+        $storeModel = new StoreModel();
+
+        $dataUpdate =    [
+            'name'              => $json['name'],
+            'email'             => $json['email'],
+            'phone'             => $json['phone'],
+            'address'           => $json['address'],
+            'contact_person'    => $json['contact_person'],
+            'contact_phone'     => $json['contact_phone']
         ];
 
-        if (!empty($json['password'])) {
-            $dataUpdate['password'] = password_hash($json['password'], PASSWORD_DEFAULT);
-        }
-
-        if($userModel->update($id, $dataUpdate)) {
+        if($storeModel->update($id, $dataUpdate)) {
             return $this->respond(['message' => 'User berhasil diupdate']);
         }
-        
+
         return $this->fail('Gagal mengupdate user');
     }
 
     public function create()
     {
-        $payload = Services::jwtPayload()->get();
+        $payload    = Services::jwtPayload()->get();
         if (!$payload || ($payload['role'] ?? 'guest') !== 'admin') {
             return $this->failForbidden('Unauthorized');
         }
-        
-        $json = $this->request->getJSON(true);
-        $userModel = new UserModel();
-        
-        $result = $userModel->insert([
-            'name'     => $json['name'],
-            'email'    => $json['email'],
-            'password' => password_hash($json['password'], PASSWORD_DEFAULT),
-            'role'     => $json['role']
+        $json       = $this->request->getJSON(true);
+        $storeModel = new StoreModel();
+        $code       = generateCode('ST', $json['name']);
+        $result     = $storeModel->insert([
+            'name'              => $json['name'],
+            'email'             => $json['email'],
+            'phone'             => $json['phone'],
+            'address'           => $json['address'],
+            'contact_person'    => $json['contact_person'],
+            'contact_phone'     => $json['contact_phone'],
+            'code'              => $code
         ]);
-
         if ($result) {
             return $this->respondCreated(['message' => 'User berhasil ditambahkan']);
         }
-        
+
         return $this->fail('Gagal menambahkan user');
     }
 
@@ -76,8 +76,8 @@ class StoreController extends Controller
             return $this->failForbidden('Unauthorized');
         }
 
-        $userModel = new UserModel();
-        if ($userModel->delete($id)) {
+        $storeModel = new StoreModel();
+        if ($storeModel->delete($id)) {
             return $this->respondDeleted(['message' => 'User berhasil dihapus']);
         }
 

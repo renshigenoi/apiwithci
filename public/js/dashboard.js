@@ -6,8 +6,10 @@ let logs                = [];
 let logsdaily           = [];
 let logsemaildaily      = [];
 let editUserId          = null;
+let editStoreId         = null;
 let editUserEmail       = null;
 let allUsers            = [];
+let allStores           = [];
 let filteredApiKeys     = [];
 let myChart             = null;
 let myChartEmail        = null;
@@ -15,11 +17,13 @@ let myChartEmailDaily   = null;
 let myChartDaily        = null;
 // --- untuk paging -- //
 let logsPerPage         = 15;
+let storesPerPage       = 15;
 let usersPerPage        = 15;
 let apiKeysPerPage      = 15;
 let currentLogPage      = 1;
 let currentUserPage     = 1;
 let currentApiKeyPage   = 1;
+let currentStorePage    = 1;
 
 // --- Helper ---
 const escapeHtml = (str) => {
@@ -203,8 +207,8 @@ function renderLogChartByEmailDaily() {
                     hidden: false,
                     index: i,
                     // Tambahkan properti color di sini untuk tiap item
-                    fontColor: textColor, 
-                    color: textColor 
+                    fontColor: textColor,
+                    color: textColor
                   };
                 });
               }
@@ -308,8 +312,8 @@ function renderLogChartDaily() {
         },
         y: {
           beginAtZero: true,
-          ticks: { 
-            color: textColor, 
+          ticks: {
+            color: textColor,
             font: { size: 10 },
             stepSize: 1 // Opsional: agar angka y-axis bulat
           },
@@ -439,7 +443,7 @@ function renderLogChart() {
   const datasets = Object.keys(counts).map(code => {
       return {
           label: `Status ${code} (${counts[code]} Request)`,
-          data: [counts[code]], 
+          data: [counts[code]],
           backgroundColor: getStatusColor(parseInt(code)),
           borderRadius: 8,           // Membuat bar tumpul/rounded agar modern
           barThickness: 60,          // Menjaga lebar bar tetap konsisten (tidak melebar)
@@ -451,7 +455,7 @@ function renderLogChart() {
   window.myChart  = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: ['Activity Distribution'], 
+      labels: ['Activity Distribution'],
       datasets: datasets
     },
     options: {
@@ -461,9 +465,9 @@ function renderLogChart() {
         legend: {
           display: true,
           position: 'bottom',
-          labels: { 
-            color: textColor, 
-            usePointStyle: true, 
+          labels: {
+            color: textColor,
+            usePointStyle: true,
             pointStyle: 'circle',
             font: { family: "'Plus Jakarta Sans'", size: 11, weight: '600' }
           }
@@ -538,13 +542,144 @@ async function loadUsers() {
     // Asumsi API Anda mengembalikan array user
     const data      = await apiFetch('/api/v1/users');
     // Pastikan kita menyimpan array ke allUsers
-    allUsers        = Array.isArray(data) ? data : (data && data.data ? data.data : []);        
+    allUsers        = Array.isArray(data) ? data : (data && data.data ? data.data : []);
     currentUserPage = 1; // Reset ke hal 1 setiap refresh
     renderUserTable();
   } catch (error) {
     console.error("Failed to load users", error);
   } finally {
     showLoading('userLoading', false);
+  }
+}
+
+async function loadStores() {
+  showLoading('storeLoading', true);
+  try {
+    const data          = await apiFetch('/api/v1/store');
+    allStores           = Array.isArray(data) ? data : (data && data.data ? data.data : []);
+    currentStorePage    = 1; // Reset ke hal 1 setiap refresh
+    renderStoreTable();
+  } catch (error) {
+    console.error("Failed to load stores", error);
+  } finally {
+    showLoading('storeLoading', false);
+  }
+}
+
+function renderStoreTable() {
+  const container = document.getElementById('storeTableBody');
+  if (!container || !allStores) {
+    if (container) container.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-gray-500">No data available</td></tr>';
+    return;
+  }
+
+  const startIndex = (currentStorePage - 1) * storesPerPage;
+  const endIndex   = startIndex + storesPerPage;
+  // Ambil subset data
+  let displayedStores = storesPerPage === 'all' ? allStores : allStores.slice(startIndex, endIndex);
+  // Jika halaman kosong tapi masih ada data di halaman sebelumnya (karena filter), coba mundur halaman
+  // (Logika pagination standar)
+  if (displayedStores.length === 0 && allStores.length > 0 && currentStorePage > 1) {
+      currentStorePage--;
+      displayedStores = allStores.slice((currentStorePage - 1) * storesPerPage, currentStorePage * storesPerPage);
+  }
+  if (displayedStores.length === 0) {
+    container.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-gray-500">No data available</td></tr>';
+    return;
+  }
+  const role = (localStorage.getItem('role') || '').toLowerCase();
+  const canDelete = role !== 'staff'; // Staff tidak bisa delete
+  // Render UI Baris
+  let html = displayedStores.map((store, index) => {
+return `
+  <tr class="group hover:bg-blue-50/50 dark:hover:bg-slate-800/40 transition-all duration-200 border-b border-slate-100 dark:border-slate-800 last:border-0">
+    <td class="px-6 py-4">
+      <div class="flex items-center">
+        <div class="flex-shrink-0 h-10 w-10 rounded-xl bg-blue-600 text-white dark:bg-blue-900/40 dark:text-blue-400 flex items-center justify-center font-extrabold shadow-sm border border-transparent dark:border-blue-800/50">
+          ${store.name ? store.name.charAt(0).toUpperCase() : '<i data-feather="store" class="w-5 h-5"></i>'}
+        </div>
+        <div class="ml-4">
+          <div class="text-sm font-bold text-gray-800 leading-tight whitespace-nowrap">
+            ${store.name}
+          </div>
+          <div class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold mt-1.5 uppercase tracking-wider transition-all duration-200
+            bg-slate-600 text-white shadow-sm
+            dark:bg-slate-800/50 dark:text-slate-300 dark:border dark:border-slate-700/50">
+            ${store.code}
+          </div>
+        </div>
+      </div>
+    </td>
+    <td class="px-6 py-4">
+      <div class="flex flex-col">
+        <div class="flex items-center text-sm font-semibold text-blue-600 dark:text-blue-400">
+          <i data-feather="mail" class="w-3.5 h-3.5 mr-2"></i>
+          ${store.email}
+        </div>
+        <div class="flex items-center text-xs text-slate-600 dark:text-slate-500 mt-1 font-medium">
+          <i data-feather="phone" class="w-3.5 h-3.5 mr-2"></i>
+          ${store.phone || '-'}
+        </div>
+      </div>
+    </td>
+    <td class="px-6 py-4">
+      <div class="text-sm font-bold text-slate-800 dark:text-slate-400">${store.contact_person}</div>
+      <div class="text-xs text-slate-600 dark:text-slate-500 mt-0.5">${store.contact_phone || '-'}</div>
+    </td>
+    <td class="px-6 py-4 text-right">
+      <div class="text-[11px] text-slate-600 dark:text-slate-400 font-mono font-bold">${store.created_at || '-'}</div>
+    </td>
+    <td class="px-6 py-4 text-right">
+      <div class="flex justify-center space-x-1">
+        <button onclick="openEditStore('${store.id}', '${store.name}', '${store.address}', '${store.email}', '${store.phone}', '${store.contact_person}', '${store.contact_phone}')" 
+                class="p-2 text-gray-400 hover:text-yellow-600 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 rounded-xl transition-all" 
+                title="Edit">
+          <i data-feather="edit-2" class="w-4 h-4"></i>
+        </button>
+        ${canDelete ? `
+        <button onclick="deleteStore('${store.id}')"
+                class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all"
+                title="Hapus">
+          <i data-feather="trash-2" class="w-4 h-4"></i>
+        </button>` : ''}
+      </div>
+    </td>
+  </tr>
+`;
+  }).join('');
+
+  container.innerHTML = html;
+  // Update info pagination
+  const totalData = allStores.length;
+  updateStorePaginationControls(totalData);
+  feather.replace();
+}
+
+function updateStorePaginationControls(totalData) {
+    const totalPages = Math.ceil(totalData / storesPerPage) || 1;
+    // Update teks info
+    document.getElementById('storePageInfo').textContent = `Page ${currentStorePage} of ${totalPages} (${totalData} Stores)`;
+
+    // Update status tombol
+    document.getElementById('btnPrevStore').disabled = (currentStorePage === 1);
+    document.getElementById('btnNextStore').disabled = (currentStorePage === totalPages);
+}
+
+// Fungsi Navigasi
+function nextStorePage() {
+  const totalPages = Math.ceil(allStores.length / storesPerPage);
+  if (currentStorePage < totalPages) {
+    currentStorePage++;
+    renderStoreTable();
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll ke atas tabel saat ganti page
+  }
+}
+
+function prevStorePage() {
+  if (currentStorePage > 1) {
+    currentStorePage--;
+    renderStoreTable();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
 
@@ -571,7 +706,7 @@ function humanizePayload(payloadString) {
 
     // Return tombol yang memicu modal detail
     return `
-      <button onclick="viewLogDetail('${encodeURIComponent(payloadString)}')" 
+      <button onclick="viewLogDetail('${encodeURIComponent(payloadString)}')"
               class="flex items-center gap-2 hover:opacity-80 transition-opacity group">
           <div class="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
               <i data-feather="${icon}" class="w-3.5 h-3.5 ${colorClass}"></i>
@@ -637,7 +772,7 @@ function updateApiBulkBar() {
   const checkedBoxes  = document.querySelectorAll('.api-row-checkbox:checked');
   const checkedCount  = checkedBoxes.length;
   const bar           = document.getElementById('bulkActionBar');
-  const countLabel    = document.getElementById('selectedCount');  
+  const countLabel    = document.getElementById('selectedCount');
   if (checkedCount > 0) {
     bar.classList.remove('hidden');
     countLabel.innerText = checkedCount;
@@ -749,7 +884,6 @@ function renderApiKeyTable(dataList = null) {
   const rows = apiKeysPerPage === 'all' ? displayData.length : parseInt(apiKeysPerPage);
   const start = (currentApiKeyPage - 1) * rows;
   const paginatedKeys = displayData.slice(start, start + rows);
-  
   if (paginatedKeys.length === 0) {
     tbody.innerHTML = `<tr><td colspan="6" class="p-10 text-center text-gray-400 italic">Belum ada API Key.</td></tr>`;
     updateApiKeyPaginationControls(0);
@@ -759,7 +893,7 @@ function renderApiKeyTable(dataList = null) {
   // Gunakan logika render yang sudah kita buat sebelumnya
   tbody.innerHTML = paginatedKeys.map(u => {
     // --- Logic Status Badge (Support Dark Mode) ---
-    const statusBadge = u.is_active == 1 
+    const statusBadge = u.is_active == 1
       ? `<span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400 rounded-lg text-[10px] font-extrabold uppercase tracking-widest border border-emerald-200 dark:border-emerald-500/20 shadow-sm">Active</span>`
       : `<span class="px-2.5 py-1 bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400 rounded-lg text-[10px] font-extrabold uppercase tracking-widest border border-slate-200 dark:border-slate-700 shadow-sm">Inactive</span>`;
 
@@ -781,8 +915,8 @@ function renderApiKeyTable(dataList = null) {
       <td class="px-6 py-4 whitespace-nowrap"><span class="text-xs font-mono text-gray-800 leading-tight">${u.ip_whitelist || '<span class="opacity-30">Any IP</span>'}</span></td>
       <td class="px-6 py-4 whitespace-nowrap">${statusBadge}</td>
       <td class="px-6 py-4 whitespace-nowrap">
-        <div class="text-xs text-gray-600 dark:text-gray-400 font-medium">${u.last_used_at 
-          ? `<span class="font-mono text-[11px]">${u.last_used_at}</span>` 
+        <div class="text-xs text-gray-600 dark:text-gray-400 font-medium">${u.last_used_at
+          ? `<span class="font-mono text-[11px]">${u.last_used_at}</span>`
           : '<span class="text-[10px] uppercase tracking-tighter text-gray-400 italic">Never Used</span>'}
         </div>
       </td>
@@ -817,7 +951,7 @@ function renderUserTable() {
     // Render baris tabel (Gunakan kode render yang sebelumnya kita buat)
     tbody.innerHTML = paginatedUsers.map(u => {
       // --- Logic Badge Role (Support Dark Mode) ---
-      const roleBadge = u.role.toLowerCase() === 'admin' 
+      const roleBadge = u.role.toLowerCase() === 'admin'
         ? `<span class="px-2.5 py-1 bg-violet-50 text-violet-700 border border-violet-200 dark:bg-violet-500/10 dark:text-violet-400 dark:border-violet-500/20 rounded-lg text-[10px] font-extrabold uppercase tracking-widest shadow-sm">Admin</span>`
         : `<span class="px-2.5 py-1 bg-indigo-50 text-indigo-700 border border-indigo-200 dark:bg-indigo-500/10 dark:text-indigo-400 dark:border-indigo-500/20 rounded-lg text-[10px] font-extrabold uppercase tracking-widest shadow-sm">Staff</span>`;
 
@@ -899,7 +1033,6 @@ window.prevLogPage  = () => { if(currentLogPage > 1) { currentLogPage--; renderL
 
 function updateUserPaginationControls(totalData) {
     const totalPages = Math.ceil(totalData / usersPerPage) || 1;
-    
     // Update teks info
     document.getElementById('userPageInfo').textContent = `Page ${currentUserPage} of ${totalPages} (${totalData} Users)`;
 
@@ -940,7 +1073,6 @@ window.copyApiKey = () => {
   const keyInput = document.getElementById('generatedKey');
   keyInput.select();
   document.execCommand('copy');
-  
   Swal.fire({
     toast: true,
     position: 'top-end',
@@ -1029,6 +1161,75 @@ window.addEventListener('click', function(e) {
 });
 
 // --- Modals & CRUD ---
+window.openAddStoreModal = () => {
+  editStoreId  = null;
+  document.getElementById('modalTitle').textContent = "Tambah Store Baru";
+  document.getElementById('storeForm').reset();
+  document.getElementById('storeModal').classList.remove('hidden');
+  feather.replace();
+};
+
+const saveStore = async () => {
+  const name             = document.getElementById('storeName').value;
+  const email            = document.getElementById('storeEmail').value;
+  const phone            = document.getElementById('storePhone').value;
+  const address          = document.getElementById('storeAddress').value;
+  const contact_person   = document.getElementById('storeContactPerson').value;
+  const contact_phone    = document.getElementById('storeContactPhone').value;
+  const url              = editStoreId ? `/api/v1/store/update/${editStoreId}` : '/api/v1/store/create';
+  const method           = editStoreId ? 'PUT' : 'POST';
+  const body             = { name, email, phone, address, contact_person, contact_phone };
+  try {
+    await apiFetch(url, {
+      method,
+      headers : { 'Content-Type': 'application/json' },
+      body    : JSON.stringify(body)
+    });
+    Swal.fire('Berhasil', 'Data berhasil disimpan', 'success');
+    closeModal('storeModal');
+    loadStores();
+  } catch (err) {
+    Swal.fire('Gagal', err.message, 'error');
+  }
+};
+
+window.openEditStore = (id, name, address, email, phone, contact_person, contact_phone) => {
+  editStoreId        = id;
+  document.getElementById('modalTitle').textContent   = "Edit Store";
+  document.getElementById('storeName').value          = name;
+  document.getElementById('storeEmail').value         = email;
+  document.getElementById('storePhone').value         = phone;
+  document.getElementById('storeAddress').value       = address;
+  document.getElementById('storeContactPerson').value = contact_person;
+  document.getElementById('storeContactPhone').value  = contact_phone;
+  document.getElementById('storeModal').classList.remove('hidden');
+  feather.replace();
+};
+
+window.deleteStore = async (id) => {
+  Swal.fire({
+    title: "Yakin ingin hapus?",
+    text: "Data store ini akan dihapus permanen!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#ef4444",
+    cancelButtonColor: "#6b7280",
+    confirmButtonText: "Ya, hapus!",
+    cancelButtonText: "Batal"
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        await apiFetch(`/api/v1/store/delete/${id}`, { method: 'DELETE' });
+        Swal.fire('Berhasil', 'Store berhasil dihapus', 'success');
+        loadStores();
+      } catch (err) {
+        Swal.fire('Gagal', err.message, 'error');
+      }
+    }
+  });
+};
+
+// --- Modals & CRUD ---
 window.openAddModal = () => {
   editUserId  = null;
   document.getElementById('modalTitle').textContent = "Tambah User Baru";
@@ -1106,9 +1307,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Tambahkan ini untuk pencarian User
     document.getElementById('searchInput')?.addEventListener('input', (e) => {
         const keyword = e.target.value.toLowerCase();
-        const filteredUsers = users.filter(u => 
-          u.name.toLowerCase().includes(keyword) || 
-          u.role.toLowerCase().includes(keyword) || 
+        const filteredUsers = users.filter(u =>
+          u.name.toLowerCase().includes(keyword) ||
+          u.role.toLowerCase().includes(keyword) ||
           u.email.toLowerCase().includes(keyword)
         );
         renderUserTable(filteredUsers);
@@ -1117,15 +1318,15 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('searchLogInput')?.addEventListener('input', (e) => {
         const keyword = e.target.value.toLowerCase();
         // Filter logs
-        const filteredLogs = logs.filter(l => 
-          (l.ip_address || "").toLowerCase().includes(keyword) || 
+        const filteredLogs = logs.filter(l =>
+          (l.ip_address || "").toLowerCase().includes(keyword) ||
           (l.uri || "").toLowerCase().includes(keyword) ||
           (l.method || "").toLowerCase().includes(keyword) ||
           (l.status_code || "").includes(keyword) ||
           (l.user_email || "").toLowerCase().includes(keyword)
         );
         // RESET halaman ke 1 saat mencari
-        currentLogPage = 1; 
+        currentLogPage = 1;
         // Panggil render dengan data hasil filter
         renderLogsPage(filteredLogs);
     });
@@ -1133,8 +1334,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Listener untuk Pencarian API Keys
     document.getElementById('searchApiKeyInput')?.addEventListener('input', (e) => {
       const keyword = e.target.value.toLowerCase();
-      filteredApiKeys = apiKeys.filter(k => 
-        (k.key_label || "").toLowerCase().includes(keyword) || 
+      filteredApiKeys = apiKeys.filter(k =>
+        (k.key_label || "").toLowerCase().includes(keyword) ||
         (k.user_email || "").toLowerCase().includes(keyword) ||
         (k.ip_whitelist || "").toLowerCase().includes(keyword)
       );
@@ -1149,7 +1350,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const searchVal   = document.getElementById('searchApiKeyInput').value;
       renderApiKeyTable(searchVal ? filteredApiKeys : apiKeys);
     });
-    
     // Listener untuk perubahan jumlah baris per halaman
     document.getElementById('logsPerPage')?.addEventListener('change', (e) => {
       logsPerPage     = parseInt(e.target.value, 10);
@@ -1161,6 +1361,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('logoutBtn')?.addEventListener('click', logout);
     // Simpan user listener
     document.getElementById('saveUserBtn')?.addEventListener('click', saveUser);
+    // Simpan store listener
+    document.getElementById('saveStoreBtn')?.addEventListener('click', saveStore);
     // Simpan API Keys listener
     document.getElementById('saveApiKeyBtn')?.addEventListener('click', processGenerateKey);
     // LOAD DATA AWAL (Ini yang bikin chart langsung muncul)
@@ -1181,17 +1383,20 @@ const chartResizeObserver = new ResizeObserver(entries => {
 
 // 2. Hubungkan ke elemen pembungkus Chart
 // Ganti '.grid' dengan ID atau class container chart Anda
-const chartContainer = document.querySelector('.grid'); 
+const chartContainer = document.querySelector('.grid');
 if (chartContainer) {
   chartResizeObserver.observe(chartContainer);
 }
 
 // Expose fungsi ke window (Krusial untuk type="module")
 window.loadUsers              = loadUsers;
+window.loadStores             = loadStores;
 window.loadLogs               = loadLogs;
 window.loadApiKeys            = loadApiKeys;
 window.nextUserPage           = nextUserPage;
 window.prevUserPage           = prevUserPage;
+window.nextStorePage          = nextStorePage;
+window.prevStorePage          = prevStorePage;
 window.nextApiKeyPage         = nextApiKeyPage;
 window.prevApiKeyPage         = prevApiKeyPage;
 window.loadDashboardStats     = loadDashboardStats;

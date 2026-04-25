@@ -31,9 +31,11 @@
       <?= view('section/apikeys'); ?>
       <?= view('section/apilogs'); ?>
       <?= view('section/users'); ?>
+      <?= view('section/store'); ?>
     </main>
     <?= view('modal/users'); ?>
     <?= view('modal/apikeys'); ?>
+    <?= view('modal/store'); ?>
   </div>
 
   <button id="backToTop" class="fixed bottom-20 right-6 z-[60] bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-2xl transition-all duration-300 translate-y-20 opacity-0 focus:outline-none active:scale-90 lg:bottom-10">

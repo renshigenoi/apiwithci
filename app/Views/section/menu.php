@@ -12,6 +12,10 @@
             <i data-feather="grid" class="w-5 h-5 mr-3"></i>
             <span class="font-semibold text-sm">Dashboard</span>
           </button>
+          <button onclick="showSection('storeSection')" class="menu-item group w-full flex items-center px-4 py-3 rounded-xl transition-all duration-200 hover:bg-gray-800 hover:text-white" id="menuStore">
+            <i data-feather="package" class="w-5 h-5 mr-3"></i>
+            <span class="font-semibold text-sm">Store Management</span>
+          </button>
           <button onclick="showSection('userSection')" class="menu-item group w-full flex items-center px-4 py-3 rounded-xl transition-all duration-200 hover:bg-gray-800 hover:text-white" id="menuUser">
             <i data-feather="users" class="w-5 h-5 mr-3"></i>
             <span class="font-semibold text-sm">User Management</span>
