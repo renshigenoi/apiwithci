@@ -24,25 +24,25 @@ Aplikasi Dashboard API Log yang dibangun menggunakan **CodeIgniter 4**. Proyek i
 ## 🚀 Ringkasan
 
 ### 1. Arsitektur Multi-Tenant (User-Store Relationship)
-- **Relasi Many-to-Many:** Mengimplementasikan hubungan antara User dan Store melalui tabel perantara `store_users`. Ini membolehkan satu pengguna menguruskan beberapa kedai dengan satu akaun.
-- **Pengurusan Akses Dinamik:** Menambah fungsi untuk menambah/menghapus akses kedai secara dinamik dalam modal profil pengguna.
-- **Sistem Kedai Default:** Menambahkan logik `is_default` menggunakan Radio Button untuk menentukan kedai mana yang akan dimuatkan secara automatik semasa log masuk.
+- **Relasi Many-to-Many:** Mengimplementasikan hubungan antara User dan Store melalui tabel perantara `store_users`. Hal ini memungkinkan satu pengguna mengelola beberapa toko dengan satu akun.
+- **Pengurusan Akses Dinamik:** Menambahkan fungsi untuk menambah/menghapus akses toko secara dinamis melalui modal profil pengguna.
+- **Sistem Kedai Default:** Menambahkan logika `is_default` menggunakan Radio Button untuk menentukan toko mana yang otomatis dimuat saat login.
 
 ### 2. Keselamatan & Pengurusan API Key
-- **Two-Step Generation:** Proses penjanaan kunci API dibahagi kepada dua fasa:
+- **Two-Step Generation:** Proses pembuatan API key dibagi menjadi dua tahap:
     - **Fasa Input:** Menetapkan label dan IP Whitelist.
-    - **Fasa Hasil:** Memaparkan *Secret Key* hanya sekali sahaja untuk tujuan keselamatan maksima.
-- **Input Group UI:** Penambahbaikan reka bentuk bar input API dengan butang 'Copy' yang bersepadu (integrated) menggunakan Flexbox untuk memastikan kedudukan butang sentiasa konsisten pada semua saiz skrin.
-- **Overlay Protection:** Menambah logik untuk menghalang modal tertutup secara tidak sengaja apabila pengguna klik di luar kawasan kotak modal semasa kunci API dipaparkan.
+    - **Fasa Hasil:** Menampilkan *Secret Key* hanya sekali untuk keamanan maksimal.
+- **Input Group UI:** Perbaikan desain bar input API dengan tombol Copy terintegrasi menggunakan Flexbox agar posisi tombol konsisten di semua ukuran layar.
+- **Overlay Protection:** Menambahkan logika agar modal tidak tertutup secara tidak sengaja ketika pengguna mengklik di luar kotak modal saat Secret Key ditampilkan.
 
-### 3. Antaramuka Pengguna (UI/UX) & Dark Mode
-- **Paging & Navigasi:** Rekabentuk semula bahagian navigasi jadual (Pagination) dengan tipografi yang bersih, jarak huruf yang lebar (*tracking-widest*), dan ikon Feather yang minimalis.
-- **Sinkronisasi Tema:** Menyelaraskan warna *Header* dan *Footer* jadual menggunakan class khusus `.paging-footer` untuk memastikan warna abu-abu terang (Slate 50) pada *Light Mode* dan Navy Gelap pada *Dark Mode*.
-- **Sticky Footer Modal:** Struktur modal dikemas kini supaya butang tindakan (Save/Cancel) sentiasa kekal di bahagian bawah walaupun kandungan modal panjang dan perlu diskrol.
+### 3. Antaramuka Pengguna (UI/UX) & Mode Gelap
+- **Paging & Navigasi:** Mendesain ulang navigasi tabel (Pagination) dengan tipografi bersih, jarak huruf lebar (*tracking-widest*), dan ikon Feather minimalis.
+- **Sinkronisasi Tema:** Menyelaraskan warna Header dan Footer tabel menggunakan class khusus `.paging-footer` agar warna abu‑abu terang (Slate 50) muncul di *Light Mode* dan biru tua (Navy) di *Dark Mode*.
+- **Sticky Footer Modal:** Struktur modal diperbarui sehingga tombol aksi (Save/Cancel) selalu berada di bagian bawah meskipun konten modal panjang dan perlu digulir.
 
 ### 4. Pengurusan Data & Log Audit
-- **Pembersihan Log Berasaskan Tarikh:** Menambah ciri 'Delete by Range' yang membolehkan admin memadam log aktiviti mengikut julat tarikh tertentu untuk tujuan penyelenggaraan storan.
-- **Database Transactions:** Menggunakan mekanisme transaksi (transStart/transComplete) dalam CodeIgniter untuk memastikan integriti data semasa proses kemas kini profil pengguna yang kompleks.
+- **Pembersihan Log Berasaskan Tanggal:** Menambahkan fitur *Delete by Range* yang memungkinkan admin menghapus log aktivitas berdasarkan rentang tanggal tertentu untuk pemeliharaan penyimpanan.
+- **Database Transactions:** Menggunakan mekanisme transaksi (*transStart/transComplete*) di CodeIgniter untuk menjaga integritas data saat melakukan pembaruan profil pengguna yang kompleks.
 
 ---
 
