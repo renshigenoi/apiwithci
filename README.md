@@ -1,4 +1,4 @@
-# 🚀 Dashboard API Monitoring - CI4
+# 🚀 Dashboard API Monitoring & Multi-Tenant System - CI4
 
 ![Status](https://img.shields.io/badge/Status-Demo-orange)
 ![Framework](https://img.shields.io/badge/Framework-CodeIgniter%204-blue)
@@ -10,12 +10,47 @@ Aplikasi Dashboard API Log yang dibangun menggunakan **CodeIgniter 4**. Proyek i
 
 ---
 
-## ✨ Fitur Utama
-- **📊 Visualisasi Data**: Integrasi Chart.js (Bar, Line, & Doughnut) untuk statistik harian.
-- **🌙 UI/UX Modern**: Mendukung Dark Mode dan desain responsif.
-- **📧 Notifikasi**: Notifikasi otomatis via SMTP Gmail, Slack dan Telegram.
-- **🔐 Keamanan**: Konfigurasi sensitif menggunakan file `.env`.
-- **🛠️ Log Management**: Monitoring aktivitas API secara real-time.
+## 🚀 Fitur Utama
+- **📊 Visualisasi Data Dinamis**: Integrasi Chart.js (Bar, Line, & Doughnut) untuk pemantauan statistik akses API secara real-time.
+- **🌙 UI/UX Modern & Adaptif**: Antarmuka responsif yang mendukung Dark Mode secara otomatis untuk kenyamanan pengguna.
+- **📧 Integrasi Notifikasi**: Pengiriman notifikasi otomatis melalui SMTP Gmail, Slack, dan Telegram (Webhook).
+- **🔐 Keamanan Tingkat Lanjut**: Manajemen kredensial menggunakan file .env dan autentikasi berbasis JWT/Session yang aman.
+- **🛠️ Log Management & Audit**: Monitoring aktivitas API secara mendalam untuk keperluan debugging dan audit keamanan.
+- **🏢 Store Management (POS-Ready)**: Manajemen data toko/cabang yang siap diintegrasikan dengan sistem Point of Sales.
+- **👥 Arsitektur Multi-Tenant**: Mendukung struktur One-to-Many, memungkinkan satu akun pengguna mengelola banyak toko secara bersamaan.
+
+---
+
+## 🚀 Ringkasan
+
+### 1. Arsitektur Multi-Tenant (User-Store Relationship)
+- **Relasi Many-to-Many:** Mengimplementasikan hubungan antara User dan Store melalui tabel perantara `store_users`. Ini membolehkan satu pengguna menguruskan beberapa kedai dengan satu akaun.
+- **Pengurusan Akses Dinamik:** Menambah fungsi untuk menambah/menghapus akses kedai secara dinamik dalam modal profil pengguna.
+- **Sistem Kedai Default:** Menambahkan logik `is_default` menggunakan Radio Button untuk menentukan kedai mana yang akan dimuatkan secara automatik semasa log masuk.
+
+### 2. Keselamatan & Pengurusan API Key
+- **Two-Step Generation:** Proses penjanaan kunci API dibahagi kepada dua fasa:
+    - **Fasa Input:** Menetapkan label dan IP Whitelist.
+    - **Fasa Hasil:** Memaparkan *Secret Key* hanya sekali sahaja untuk tujuan keselamatan maksima.
+- **Input Group UI:** Penambahbaikan reka bentuk bar input API dengan butang 'Copy' yang bersepadu (integrated) menggunakan Flexbox untuk memastikan kedudukan butang sentiasa konsisten pada semua saiz skrin.
+- **Overlay Protection:** Menambah logik untuk menghalang modal tertutup secara tidak sengaja apabila pengguna klik di luar kawasan kotak modal semasa kunci API dipaparkan.
+
+### 3. Antaramuka Pengguna (UI/UX) & Dark Mode
+- **Paging & Navigasi:** Rekabentuk semula bahagian navigasi jadual (Pagination) dengan tipografi yang bersih, jarak huruf yang lebar (*tracking-widest*), dan ikon Feather yang minimalis.
+- **Sinkronisasi Tema:** Menyelaraskan warna *Header* dan *Footer* jadual menggunakan class khusus `.paging-footer` untuk memastikan warna abu-abu terang (Slate 50) pada *Light Mode* dan Navy Gelap pada *Dark Mode*.
+- **Sticky Footer Modal:** Struktur modal dikemas kini supaya butang tindakan (Save/Cancel) sentiasa kekal di bahagian bawah walaupun kandungan modal panjang dan perlu diskrol.
+
+### 4. Pengurusan Data & Log Audit
+- **Pembersihan Log Berasaskan Tarikh:** Menambah ciri 'Delete by Range' yang membolehkan admin memadam log aktiviti mengikut julat tarikh tertentu untuk tujuan penyelenggaraan storan.
+- **Database Transactions:** Menggunakan mekanisme transaksi (transStart/transComplete) dalam CodeIgniter untuk memastikan integriti data semasa proses kemas kini profil pengguna yang kompleks.
+
+---
+
+## 🛠️ Teknologi Yang Digunakan
+- **Backend:** PHP (CodeIgniter 4)
+- **Frontend:** Tailwind CSS, JavaScript (Vanilla)
+- **Icons:** Feather Icons
+- **Database:** MySQL
 
 ---
 

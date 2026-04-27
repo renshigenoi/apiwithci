@@ -4,11 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Panel | API Management</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://unpkg.com/feather-icons"></script>
   <link rel="stylesheet" href="<?= base_url('css/dashboard.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('tailwindcss/output.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('sweetalert/sweetalert2.min.css') ?>">
+
+  <script src="<?= base_url('sweetalert/sweetalert2.all.min.js') ?>"></script>
+  <script src="<?= base_url('js/chart.js') ?>"></script>
+  <script src="<?= base_url('js/feather/feather.min.js') ?>"></script>
 </head>
 <body class="bg-[#f8fafc] text-gray-900 antialiased">
 
@@ -17,7 +19,7 @@
       <div class="bg-blue-600 p-1.5 rounded-lg mr-3">
         <i data-feather="zap" class="w-5 h-5 text-white"></i>
       </div>
-      <span class="text-white tracking-tight">My API</span>
+      <span class="text-white tracking-tight"><a href="#" onclick="showSection('dashboardSection')">My API</a></span>
     </div>
     <button onclick="toggleSidebar()" class="p-2 hover:bg-gray-800 rounded-xl transition-all">
       <i data-feather="menu"></i>
@@ -34,6 +36,7 @@
       <?= view('section/store'); ?>
     </main>
     <?= view('modal/users'); ?>
+    <?= view('modal/storeuser'); ?>
     <?= view('modal/apikeys'); ?>
     <?= view('modal/store'); ?>
   </div>
@@ -44,5 +47,6 @@
 
   <script src="<?= base_url('js/main.js') ?>"></script>
   <script type="module" src="<?= base_url('js/dashboard.js') ?>"></script>
+  <script type="module" src="<?= base_url('js/users.js') ?>"></script>
 </body>
 </html>

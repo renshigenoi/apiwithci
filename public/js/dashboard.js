@@ -5,7 +5,6 @@ let apiKeys             = [];
 let logs                = [];
 let logsdaily           = [];
 let logsemaildaily      = [];
-let editUserId          = null;
 let editStoreId         = null;
 let editUserEmail       = null;
 let allUsers            = [];
@@ -24,7 +23,6 @@ let currentLogPage      = 1;
 let currentUserPage     = 1;
 let currentApiKeyPage   = 1;
 let currentStorePage    = 1;
-
 // --- Helper ---
 const escapeHtml = (str) => {
   if (!str) return "";
@@ -49,7 +47,7 @@ async function loadDashboardStats() {
     // --- Logika Hide/Show Card User (tetap sama) ---
     const cardUsers = document.getElementById('cardActiveUsers');
     if (cardUsers) {
-      if (stats.role !== 'admin') {
+      if (stats.role !== 'superadmin') {
         cardUsers.classList.add('hidden');
         cardUsers.parentElement.classList.replace('md:grid-cols-3', 'md:grid-cols-2');
       } else {
@@ -60,7 +58,7 @@ async function loadDashboardStats() {
     // --- Update Angka Utama ---
     animateNumber('statTotalRequests', stats.total_requests);
     animateNumber('statTotalKeys', stats.total_keys);
-    if (stats.role === 'admin') animateNumber('statActiveUsers', stats.active_users);
+    if (stats.role === 'superadmin') animateNumber('statActiveUsers', stats.active_users);
     // --- UPDATE BAGIAN INI (Agar muncul kembali) ---
     const todayEl         = document.getElementById('statToday');
     if (todayEl) todayEl.textContent = stats.today_requests.toLocaleString();
@@ -112,6 +110,7 @@ async function loadLogs() {
     renderLogChart();
     // render all logs by email chart
     renderLogChartByEmail();
+
     // render logs table
     const logRole   = (localStorage.getItem("role") || "").toLowerCase();
     const logEmail  = (localStorage.getItem("email") || "").toLowerCase();
@@ -121,6 +120,7 @@ async function loadLogs() {
     logs            = await apiFetch(`/api/v1/logs${logQuery}`);
     currentLogPage  = 1;
     renderLogsPage();
+
     // render daily logs
     const role      = (localStorage.getItem("role") || "").toLowerCase();
     const userEmail = (localStorage.getItem("email") || "").toLowerCase();
@@ -511,6 +511,20 @@ async function loadApiKeys() {
   }
 }
 
+function updateLogPaginationControls(totalData) {
+  const totalPages  = Math.ceil(totalData / logsPerPage) || 1;
+  const infoEl      = document.getElementById('logPageInfo');
+  const btnPrev     = document.querySelector("button[onclick='prevLogPage()']");
+  const btnNext     = document.querySelector("button[onclick='nextLogPage()']");
+
+  if (infoEl) {
+    infoEl.textContent = `Page ${currentLogPage} of ${totalPages} (${totalData} entries)`;
+  }
+
+  if (btnPrev) btnPrev.disabled = (currentLogPage === 1);
+  if (btnNext) btnNext.disabled = (currentLogPage === totalPages || logsPerPage === 'all');
+}
+
 function updateApiKeyPaginationControls(totalData) {
     const rows = apiKeysPerPage === 'all' ? totalData : parseInt(apiKeysPerPage);
     const totalPages = Math.ceil(totalData / rows) || 1;
@@ -885,7 +899,7 @@ function renderApiKeyTable(dataList = null) {
   const start = (currentApiKeyPage - 1) * rows;
   const paginatedKeys = displayData.slice(start, start + rows);
   if (paginatedKeys.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" class="p-10 text-center text-gray-400 italic">Belum ada API Key.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" class="p-10 text-center text-gray-400 italic">Belum ada API Key.</td></tr>`;
     updateApiKeyPaginationControls(0);
     return;
   }
@@ -951,9 +965,9 @@ function renderUserTable() {
     // Render baris tabel (Gunakan kode render yang sebelumnya kita buat)
     tbody.innerHTML = paginatedUsers.map(u => {
       // --- Logic Badge Role (Support Dark Mode) ---
-      const roleBadge = u.role.toLowerCase() === 'admin'
-        ? `<span class="px-2.5 py-1 bg-violet-50 text-violet-700 border border-violet-200 dark:bg-violet-500/10 dark:text-violet-400 dark:border-violet-500/20 rounded-lg text-[10px] font-extrabold uppercase tracking-widest shadow-sm">Admin</span>`
-        : `<span class="px-2.5 py-1 bg-indigo-50 text-indigo-700 border border-indigo-200 dark:bg-indigo-500/10 dark:text-indigo-400 dark:border-indigo-500/20 rounded-lg text-[10px] font-extrabold uppercase tracking-widest shadow-sm">Staff</span>`;
+      const roleBadge = u.role.toLowerCase() === 'superadmin'
+        ? `<span class="px-2.5 py-1 bg-violet-50 text-violet-700 border border-violet-200 dark:bg-violet-500/10 dark:text-violet-400 dark:border-violet-500/20 rounded-lg text-[10px] font-extrabold uppercase tracking-widest shadow-sm">${u.role}</span>`
+        : `<span class="px-2.5 py-1 bg-indigo-50 text-indigo-700 border border-indigo-200 dark:bg-indigo-500/10 dark:text-indigo-400 dark:border-indigo-500/20 rounded-lg text-[10px] font-extrabold uppercase tracking-widest shadow-sm">${u.role}</span>`;
 
       return `
         <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors border-b border-gray-50 dark:border-gray-700/50">
@@ -989,7 +1003,8 @@ function renderLogsPage(dataList = null) {
   const paginatedData = displayData.slice(start, start + logsPerPage);
 
   if (paginatedData.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" class="p-10 text-center text-gray-400 italic">No logs found for this period.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" class="p-10 text-center text-gray-400 italic">No logs found for this period.</td></tr>`;
+    updateLogPaginationControls(0);
     return;
   }
 
@@ -1026,10 +1041,23 @@ function renderLogsPage(dataList = null) {
   // Update info halaman
   const totalPages = Math.ceil(displayData.length / logsPerPage) || 1;
   document.getElementById('logPageInfo').textContent = `Page ${currentLogPage} of ${totalPages} (${displayData.length} entries)`;
+  updateLogPaginationControls(displayData.length);
   feather.replace();
 }
-window.nextLogPage  = () => { if(currentLogPage < Math.ceil(logs.length/logsPerPage)) { currentLogPage++; renderLogsPage(); } };
-window.prevLogPage  = () => { if(currentLogPage > 1) { currentLogPage--; renderLogsPage(); } };
+window.nextLogPage = () => {
+    const totalPages = Math.ceil(logs.length / logsPerPage);
+    if (currentLogPage < totalPages) {
+        currentLogPage++;
+        renderLogsPage();
+    }
+};
+
+window.prevLogPage = () => {
+    if (currentLogPage > 1) {
+        currentLogPage--;
+        renderLogsPage();
+    }
+};
 
 function updateUserPaginationControls(totalData) {
     const totalPages = Math.ceil(totalData / usersPerPage) || 1;
@@ -1061,11 +1089,12 @@ function prevUserPage() {
 
 // --- Modals & API Keys ---
 window.openGenerateKeyModal = () => {
+  document.querySelector('.overflow-y-auto').scrollTop  = 0;
   document.getElementById('apiKeyModal').classList.remove('hidden');
   document.getElementById('keyFormStep').classList.remove('hidden');
   document.getElementById('keyResultStep').classList.add('hidden');
-  document.getElementById('keyLabel').value = "";
-  document.getElementById('keyIp').value = "";
+  document.getElementById('keyLabel').value             = "";
+  document.getElementById('keyIp').value                = "";
   feather.replace();
 };
 
@@ -1103,13 +1132,16 @@ const processGenerateKey = async () => {
     if (response.status === 200) {
       // Tampilkan key asli di Step 2 Modal
       document.getElementById('generatedKey').value = response.key;
+      // Saat sukses generate key:
       document.getElementById('keyFormStep').classList.add('hidden');
+      document.getElementById('footerStep1').classList.add('hidden');
       document.getElementById('keyResultStep').classList.remove('hidden');
+      document.getElementById('footerStep2').classList.remove('hidden');
+      setTimeout(() => { feather.replace(); }, 50);
       loadApiKeys();
     } else {
       Swal.fire('Gagal', result.message, 'error');
     }
-    feather.replace();
   } catch (err) {
     Swal.fire('Gagal', err.message, 'error');
   }
@@ -1155,15 +1187,18 @@ window.closeModal = (id) => {
 // Menutup modal jika klik di luar box modal (overlay)
 window.addEventListener('click', function(e) {
   if (e.target.classList.contains('fixed')) {
+    if (e.target.id === 'apiKeyModal') {
+      return;
+    }
     e.target.classList.add('hidden');
-    // Opsional: jalankan fungsi reset form jika perlu
   }
 });
 
 // --- Modals & CRUD ---
 window.openAddStoreModal = () => {
-  editStoreId  = null;
-  document.getElementById('modalTitle').textContent = "Tambah Store Baru";
+  document.querySelector('.overflow-y-auto').scrollTop  = 0;
+  editStoreId                                           = null;
+  document.getElementById('modalTitle').textContent     = "Tambah Store Baru";
   document.getElementById('storeForm').reset();
   document.getElementById('storeModal').classList.remove('hidden');
   feather.replace();
@@ -1194,14 +1229,15 @@ const saveStore = async () => {
 };
 
 window.openEditStore = (id, name, address, email, phone, contact_person, contact_phone) => {
-  editStoreId        = id;
-  document.getElementById('modalTitle').textContent   = "Edit Store";
-  document.getElementById('storeName').value          = name;
-  document.getElementById('storeEmail').value         = email;
-  document.getElementById('storePhone').value         = phone;
-  document.getElementById('storeAddress').value       = address;
-  document.getElementById('storeContactPerson').value = contact_person;
-  document.getElementById('storeContactPhone').value  = contact_phone;
+  document.querySelector('.overflow-y-auto').scrollTop  = 0;
+  editStoreId                                           = id;
+  document.getElementById('modalTitle').textContent     = "Edit Store";
+  document.getElementById('storeName').value            = name;
+  document.getElementById('storeEmail').value           = email;
+  document.getElementById('storePhone').value           = phone;
+  document.getElementById('storeAddress').value         = address;
+  document.getElementById('storeContactPerson').value   = contact_person;
+  document.getElementById('storeContactPhone').value    = contact_phone;
   document.getElementById('storeModal').classList.remove('hidden');
   feather.replace();
 };
@@ -1229,56 +1265,69 @@ window.deleteStore = async (id) => {
   });
 };
 
-// --- Modals & CRUD ---
-window.openAddModal = () => {
-  editUserId  = null;
-  document.getElementById('modalTitle').textContent = "Tambah User Baru";
-  document.getElementById('userForm').reset();
-  document.getElementById('userModal').classList.remove('hidden');
-  feather.replace();
-};
+window.clearLogs = async () => {
+  // 1. Konfirmasi dengan SweetAlert
+  const result = await Swal.fire({
+    title: 'Kosongkan Log?',
+    text: "Semua riwayat akses API akan dihapus permanen!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#f97316', // orange-500
+    cancelButtonColor: '#6b7280', // gray-500
+    confirmButtonText: 'Ya, Hapus Semua!',
+    cancelButtonText: 'Batal'
+  });
 
-window.openEdit = (id, name, email, role) => {
-  editUserId  = id;
-  document.getElementById('modalTitle').textContent = "Edit User";
-  document.getElementById('userName').value = name;
-  document.getElementById('userEmail').value = email;
-  document.getElementById('userRole').value = role;
-  document.getElementById('userPassword').value = "";
-  document.getElementById('userModal').classList.remove('hidden');
-  feather.replace();
-};
+  if (result.isConfirmed) {
+    try {
+      // 2. Panggil API Clear Log
+      const response = await apiFetch('/api/v1/logs/clear', {
+        method: 'DELETE'
+      });
 
-const saveUser = async () => {
-  const name      = document.getElementById('userName').value;
-  const email     = document.getElementById('userEmail').value;
-  const password  = document.getElementById('userPassword').value;
-  const role      = document.getElementById('userRole').value;
-  const url       = editUserId ? `/api/v1/users/update/${editUserId}` : '/api/v1/users/create';
-  const method    = editUserId ? 'PUT' : 'POST';
-  const body      = { name, email, role };
-  if (password) body.password = password;
-  try {
-    await apiFetch(url, {
-      method,
-      headers : { 'Content-Type': 'application/json' },
-      body    : JSON.stringify(body)
-    });
-    Swal.fire('Berhasil', 'Data berhasil disimpan', 'success');
-    closeModal('userModal');
-    loadUsers();
-  } catch (err) {
-    Swal.fire('Gagal', err.message, 'error');
+      if (response.status === 'success') {
+        Swal.fire('Berhasil', 'Semua log telah dibersihkan', 'success');
+        loadLogs(); // Refresh tabel log agar kosong
+      } else {
+        Swal.fire('Gagal', response.message || 'Gagal menghapus log', 'error');
+      }
+    } catch (err) {
+      console.error("Error clear logs:", err);
+      Swal.fire('Error', err.message || 'Terjadi kesalahan sistem', 'error');
+    }
   }
 };
 
-window.deleteUser = async (id) => {
-  const res   = await Swal.fire({ title: 'Hapus user?', icon: 'warning', showCancelButton: true });
-  if (res.isConfirmed) {
+window.deleteFilteredLogs = async () => {
+  const start   = document.getElementById('logStartDate').value;
+  const end     = document.getElementById('logEndDate').value;
+  if (!start || !end) {
+    return Swal.fire('Perhatian', 'Pilih rentang tanggal (Start & End) terlebih dahulu untuk menghapus data spesifik.', 'warning');
+  }
+  const result  = await Swal.fire({
+    title: 'Hapus Log Terpilih?',
+    html: `Data log dari tanggal <b>${start}</b> sampai <b>${end}</b> akan dihapus permanen!`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#ef4444',
+    confirmButtonText: 'Ya, Hapus Data',
+    cancelButtonText: 'Batal'
+  });
+
+  if (result.isConfirmed) {
     try {
-      await apiFetch(`/api/v1/users/delete/${id}`, { method: 'DELETE' });
-      loadUsers();
-    } catch (e) { Swal.fire('Error', 'Gagal hapus', 'error'); }
+      const response  = await apiFetch(`/api/v1/logs/delete-range?start=${start}&end=${end}`, {
+        method: 'DELETE'
+      });
+      if (response.status === 'success') {
+        Swal.fire('Berhasil', response.message, 'success');
+        loadLogs();
+      } else {
+        Swal.fire('Gagal', response.message, 'error');
+      }
+    } catch (err) {
+      Swal.fire('Error', err.message, 'error');
+    }
   }
 };
 
@@ -1286,7 +1335,7 @@ window.deleteUser = async (id) => {
 document.addEventListener('DOMContentLoaded', () => {
     // === Hide menu API Logs jika bukan admin ===
     const userRole = (localStorage.getItem("role") || "").toLowerCase(); // misalnya role disimpan di localStorage
-    if (userRole !== "admin") {
+    if (userRole !== "superadmin") {
       document.getElementById("menuUser")?.style.setProperty("display", "none");
       // document.getElementById("menuAPIKey")?.style.setProperty("display", "none");
     }
@@ -1359,8 +1408,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Jalankan Logout listener
     document.getElementById('logoutBtn')?.addEventListener('click', logout);
-    // Simpan user listener
-    document.getElementById('saveUserBtn')?.addEventListener('click', saveUser);
     // Simpan store listener
     document.getElementById('saveStoreBtn')?.addEventListener('click', saveStore);
     // Simpan API Keys listener
@@ -1395,6 +1442,8 @@ window.loadLogs               = loadLogs;
 window.loadApiKeys            = loadApiKeys;
 window.nextUserPage           = nextUserPage;
 window.prevUserPage           = prevUserPage;
+window.nextLogPage            = nextLogPage;
+window.prevLogPage            = prevLogPage;
 window.nextStorePage          = nextStorePage;
 window.prevStorePage          = prevStorePage;
 window.nextApiKeyPage         = nextApiKeyPage;

@@ -1,7 +1,10 @@
 
     <aside id="sidebar" class="w-72 bg-gray-900 text-gray-300 flex flex-col fixed top-0 left-0 z-[110] -translate-x-full lg:translate-x-0 shadow-2xl border-r border-gray-800">
       <div class="h-16 flex items-center px-4 text-2xl font-bold border-b border-gray-700 bg-gray-800 shrink-0">
-        My API
+        <button onclick="showSection('dashboardSection')" class="flex items-center text-gray-300 hover:text-white transition">
+          <i data-feather="zap" class="w-6 h-6 mr-2"></i>
+          <span>My API</span>
+        </button>
       </div>
       <div class="menu-container flex-1 overflow-y-auto custom-scrollbar py-6">
         <nav class="px-4 space-y-1.5">

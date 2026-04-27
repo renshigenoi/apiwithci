@@ -183,3 +183,31 @@ html.dark table code {
 #bulkActionBar:not(.hidden) {
     animation: slideUp 0.3s ease-out forwards;
 }
+.overflow-y-auto::-webkit-scrollbar {
+    width: 6px;
+}
+.overflow-y-auto::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}
+/* Fix Footer Paging agar sinkron dengan thead */
+.paging-footer {
+    background-color: #f8fafc !important; /* Warna Slate 50 (Sama dengan thead light) */
+    border-top: 1px solid #e2e8f0 !important;
+}
+
+html.dark .paging-footer {
+    background-color: #020617 !important; /* Warna Navy Gelap (Sama dengan thead dark) */
+    border-top: 1px solid #1e293b !important;
+}
+
+/* Pastikan teks info di paging tidak hilang */
+.paging-footer span {
+    color: #94a3b8 !important; /* Slate 400 */
+}

@@ -1,0 +1,4 @@
+@import "tailwindcss";
+
+/* Use the source() function to tell Tailwind where your PHP views are */
+@source "../../app/Views/**/*.php";

@@ -56,14 +56,14 @@ class CreateStoreTable extends Migration
 
         $this->forge->addKey('id', true);
         $this->forge->addUniqueKey('code');
-        $this->forge->createTable('stores');
+        $this->forge->createTable('store');
 
         // Menambahkan default current_timestamp secara manual agar lebih presisi sesuai SQL kamu
-        $this->db->query("ALTER TABLE `stores` MODIFY `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP");
+        $this->db->query("ALTER TABLE `store` MODIFY `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP");
     }
 
     public function down()
     {
-        $this->forge->dropTable('stores');
+        $this->forge->dropTable('store');
     }
 }

@@ -16,6 +16,9 @@
                 <button onclick="window.location='/api/v1/export-pdf?start='+logStartDate.value+'&end='+logEndDate.value" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all shadow-sm flex items-center">
                   <i data-feather="download" class="w-4 h-4 mr-2"></i> PDF
                 </button>
+                <button onclick="clearLogs()" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all shadow-sm flex items-center">
+                  <i data-feather="trash-2" class="w-4 h-4 mr-2"></i> Clear All Log
+                </button>
               </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mt-6">
@@ -29,9 +32,12 @@
                   <input type="date" id="logEndDate" class="border border-gray-200 p-2.5 rounded-lg w-full text-sm focus:ring-2 focus:ring-blue-500 outline-none">
                 </div>
               </div>
-              <div class="flex items-end">
-                <button onclick="loadLogs()" class="w-full bg-blue-600 hover:bg-blue-700 text-white p-2.5 rounded-lg text-sm font-bold transition-all flex items-center justify-center shadow-sm">
+              <div class="flex items-end gap-2 md:col-span-2">
+                <button onclick="loadLogs()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white p-2.5 rounded-lg text-sm font-bold transition-all flex items-center justify-center shadow-sm">
                   <i data-feather="filter" class="w-4 h-4 mr-2"></i> Apply Filter
+                </button>
+                <button onclick="deleteFilteredLogs()" class="flex-1 bg-red-100 hover:bg-red-200 text-red-600 p-2.5 rounded-lg text-sm font-bold transition-all flex items-center justify-center border border-red-200 shadow-sm" title="Hapus Data Terfilter">
+                  <i data-feather="trash-2" class="w-4 h-4 mr-2"></i> Delete Filtered Log
                 </button>
               </div>
             </div>
@@ -74,7 +80,7 @@
               <tbody id="logTableBody" class="divide-y divide-gray-100 text-sm"> </tbody>
             </table>
           </div>
-          <div class="p-4 lg:p-6 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="paging-footer p-4 lg:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 transition-all duration-300">
             <span id="logPageInfo" class="text-xs font-bold text-gray-500 uppercase tracking-wider"></span>
             <div class="flex gap-2">
               <button onclick="prevLogPage()" class="flex items-center px-4 py-2 bg-white border border-gray-200 rounded-lg text-xs font-bold text-gray-600 hover:bg-gray-50 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest">

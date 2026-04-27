@@ -15,7 +15,7 @@ class ApiKeyController extends Controller
     public function index()
     {
         $payload    = Services::jwtPayload()->get();
-        $role       = $payload['role'] ?? 'staff';
+        $role       = $payload['role'] ?? 'user';
         $email      = $payload['email'] ?? '';
         $model      = new ApiKeyModel();
         if ($role === 'admin') {
@@ -73,7 +73,7 @@ class ApiKeyController extends Controller
                         ->update();
         if ($updated) {
             $payload    = Services::jwtPayload()->get();
-            $userId     = $payload['user_id'] ?? 'staff';
+            $userId     = $payload['user_id'] ?? 'user';
             $userEmail  = $payload['email'] ?? '';
             $items      = $model->whereIn('id', $ids)->select('id, key_label')->findAll();
             $details    = array_map(function($item) {
@@ -107,7 +107,7 @@ class ApiKeyController extends Controller
     public function bulkDelete()
     {
         $payload        = Services::jwtPayload()->get();
-        $userId         = $payload['user_id'] ?? 'staff';
+        $userId         = $payload['user_id'] ?? 'user';
         $userEmail      = $payload['email'] ?? '';
         $json           = $this->request->getJSON();
         $ids            = $json->ids;
@@ -122,7 +122,7 @@ class ApiKeyController extends Controller
         $deleted        = $model->delete($ids); // TRUE jika berhasil
         if ($deleted) {
             $payload    = Services::jwtPayload()->get();
-            $userId     = $payload['user_id'] ?? 'staff';
+            $userId     = $payload['user_id'] ?? 'user';
             $userEmail  = $payload['email'] ?? '';
 
             $logModel   = new ApiLogModel();
@@ -152,7 +152,7 @@ class ApiKeyController extends Controller
     public function delete($id = null)
     {
         $payload    = Services::jwtPayload()->get();
-        $role       = $payload['role'] ?? 'staff';
+        $role       = $payload['role'] ?? 'user';
         $email      = $payload['email'] ?? '';
         $model      = new ApiKeyModel();
         $key        = $model->find($id);

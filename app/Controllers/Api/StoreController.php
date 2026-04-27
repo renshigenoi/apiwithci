@@ -18,10 +18,17 @@ class StoreController extends Controller
         return $this->respond($storeModel->findAll());
     }
 
+    public function getOptions()
+    {
+        $storeModel = new StoreModel();
+        $data = $storeModel->select('id, name, code')->findAll();
+        return $this->respond($data);
+    }
+
     public function update($id)
     {
         $payload = Services::jwtPayload()->get();
-        if (!$payload || ($payload['role'] ?? 'guest') !== 'admin') {
+        if (!$payload || ($payload['role'] ?? 'guest') !== 'superadmin') {
             return $this->failForbidden('Unauthorized'); // 3. Gunakan fail standar
         }
 
@@ -47,7 +54,7 @@ class StoreController extends Controller
     public function create()
     {
         $payload    = Services::jwtPayload()->get();
-        if (!$payload || ($payload['role'] ?? 'guest') !== 'admin') {
+        if (!$payload || ($payload['role'] ?? 'guest') !== 'superadmin') {
             return $this->failForbidden('Unauthorized');
         }
         $json       = $this->request->getJSON(true);
@@ -72,7 +79,7 @@ class StoreController extends Controller
     public function delete($id)
     {
         $payload = Services::jwtPayload()->get();
-        if (!$payload || ($payload['role'] ?? 'guest') !== 'admin') {
+        if (!$payload || ($payload['role'] ?? 'guest') !== 'superadmin') {
             return $this->failForbidden('Unauthorized');
         }
 

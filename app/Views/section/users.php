@@ -49,7 +49,7 @@
               </tbody>
             </table>
           </div>
-          <div class="p-4 lg:p-6 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="paging-footer p-4 lg:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 transition-all duration-300">
             <span id="userPageInfo" class="text-xs font-bold text-gray-500 uppercase tracking-wider">
               Showing 0 of 0 users
             </span>

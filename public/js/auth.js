@@ -60,7 +60,9 @@ export async function apiFetch(url, options = {}) {
 
   const data = await res.json();
   if (!res.ok) {
-    throw new Error(data.message || "Request gagal");
+    const errorMessage = data.messages?.error || data.message || "Request gagal";
+    throw new Error(errorMessage);
+    // throw new Error(data.message || "Request gagal");
   }
   return data;
 }

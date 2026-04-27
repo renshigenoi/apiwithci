@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "tailwindcss": "^4.2.4"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.2.4",
+    "feather-icons": "^4.29.2",
+    "sweetalert2": "^11.26.24"
+  }
+}

@@ -13,19 +13,38 @@ class AuthController extends ResourceController
         $issuedAt   = time();
         $expireAt   = $issuedAt + 3600; // 1 jam
 
-        $payload = [
-            'iss'  => 'apici',        // issuer
-            'iat'  => $issuedAt,      // issued at
-            'nbf'  => $issuedAt,      // not before
-            'exp'  => $expireAt,      // expired at
-            'data' => [
+        $payload    = [
+            'iss'       => 'apici',        // issuer
+            'iat'       => $issuedAt,      // issued at
+            'nbf'       => $issuedAt,      // not before
+            'exp'       => $expireAt,      // expired at
+            'data'      => [
                 'id'    => $user['id'],
                 'email' => $user['email'],
                 'role'  => $user['role']
             ]
         ];
+        $secretKey = env('jwt.secret');
+        return JWT::encode($payload, $secretKey, 'HS256');
+    }
 
-        $secretKey = getenv('jwt.secret');
+    private function generateStoreToken($user, $storeId)
+    {
+        $issuedAt   = time();
+        $expireAt   = $issuedAt + 3600; // 1 jam
+        $payload    = [
+            'iss'       => 'apici',        // issuer
+            'iat'       => $issuedAt,      // issued at
+            'nbf'       => $issuedAt,      // not before
+            'exp'       => $expireAt,      // expired at
+            'data'      => [
+                'id'       => $user['id'],
+                'email'    => $user['email'],
+                'role'     => $user['role'],
+                'store_id' => $storeId // Tambahkan ini!
+            ]
+        ];
+        $secretKey  = env('jwt.secret');
         return JWT::encode($payload, $secretKey, 'HS256');
     }
 
@@ -169,7 +188,6 @@ class AuthController extends ResourceController
             return $this->respond(['message' => 'Jika email terdaftar, instruksi reset akan dikirim.'], 200);
         } else {
             // Jika gagal, log error-nya untuk debugging
-            log_message('error', $emailService->printDebugger(['headers']));
             return $this->fail('Gagal mengirim email. Pastikan konfigurasi SMTP di app/Config/Email.php sudah benar.');
         }
     }

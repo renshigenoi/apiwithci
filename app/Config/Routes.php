@@ -18,15 +18,20 @@ $routes->group('api/v1', function($routes) {
     $routes->post('forgot-password', 'Api\AuthController::forgotPassword');
     $routes->post('update-password', 'Api\AuthController::updatePassword');
 
-    $routes->group('users', ['filter' => ['jwt','ratelimit','log']], function($routes) {
+    $routes->group('users', ['filter' => ['jwt','ratelimit']], function($routes) {
         $routes->get('/', 'Api\UserController::index');
         $routes->post('create', 'Api\UserController::create');
+        $routes->get('detail/(:num)', 'Api\UserController::detail/$1');
+    });
+
+    $routes->group('users', ['filter' => ['jwt','ratelimit','log']], function($routes) {
         $routes->put('update/(:num)', 'Api\UserController::update/$1');
         $routes->delete('delete/(:num)', 'Api\UserController::delete/$1');
     });
 
     $routes->group('store', ['filter' => ['jwt','ratelimit','log']], function($routes) {
         $routes->get('/', 'Api\StoreController::index');
+        $routes->get('options', 'Api\StoreController::getOptions');
         $routes->post('create', 'Api\StoreController::create');
         $routes->put('update/(:num)', 'Api\StoreController::update/$1');
         $routes->delete('delete/(:num)', 'Api\StoreController::delete/$1');
@@ -41,6 +46,11 @@ $routes->group('api/v1', function($routes) {
     $routes->group('bulk', ['filter' => ['jwt','ratelimit']], function($routes) {
         $routes->post('apikey-status', 'Api\ApiKeyController::bulkStatus');
         $routes->post('apikey-delete', 'Api\ApiKeyController::bulkDelete');
+    });
+
+    $routes->group('logs', ['filter' => ['jwt','ratelimit','log']], function($routes) {
+        $routes->delete('clear', 'Api\LogController::clear');
+        $routes->delete('delete-range', 'Api\LogController::deleteRange');
     });
 
     $routes->group('logs', ['filter' => ['jwt','ratelimit']], function($routes) {

@@ -46,8 +46,8 @@ class CreateStoreUsersTable extends Migration
         $this->forge->addKey('user_id');
         $this->forge->addKey('store_id');
         $this->forge->createTable('store_users');
-        
-        // Atur default timestamp via query
+        $this->forge->addForeignKey('user_id', 'users', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('store_id', 'stores', 'id', 'CASCADE', 'CASCADE');
         $this->db->query("ALTER TABLE `store_users` MODIFY `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP");
     }
 
