@@ -4,12 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Login | API Admin Panel</title>
-
   <link rel="stylesheet" href="<?= base_url('css/dashboard.css') ?>">
   <link rel="stylesheet" href="<?= base_url('tailwindcss/output.css') ?>">
   <link rel="stylesheet" href="<?= base_url('sweetalert/sweetalert2.min.css') ?>">
-
-  <script src="<?= base_url('js/header.js') ?>"></script>
+  <script src="<?= base_url('js/header.js?v=1.0') ?>"></script>
   <script src="<?= base_url('sweetalert/sweetalert2.all.min.js') ?>"></script>
   <script src="<?= base_url('js/feather/feather.min.js') ?>"></script>
 </head>
@@ -34,16 +32,14 @@
         <form id="loginForm" class="space-y-5" onsubmit="return false;">
           <div>
             <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 ml-1">Email</label>
-            <input type="email" id="email" placeholder="your email address" 
-              class="w-full px-5 py-4 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-700 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 text-gray-900 dark:text-white outline-none transition-all placeholder:text-gray-300 dark:placeholder:text-gray-600" required>
+            <input type="email" id="email" placeholder="your email address" class="w-full px-5 py-4 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-700 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 text-gray-900 dark:text-white outline-none transition-all placeholder:text-gray-300 dark:placeholder:text-gray-600" required>
           </div>
           <div>
             <div class="flex justify-between items-center mb-2 ml-1">
               <label class="text-sm font-bold text-gray-700 dark:text-gray-300">Password</label>
               <a href="javascript:void(0)" onclick="openForgotModal()" class="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline">Lupa?</a>
             </div>
-            <input type="password" id="password" placeholder="••••••••" 
-              class="w-full px-5 py-4 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-700 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 text-gray-900 dark:text-white outline-none transition-all" required>
+            <input type="password" id="password" placeholder="••••••••" class="w-full px-5 py-4 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-700 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 text-gray-900 dark:text-white outline-none transition-all" required>
           </div>
           <div class="pt-2">
             <button type="submit" class="w-full bg-gray-900 dark:bg-blue-600 hover:bg-black dark:hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-xl active:scale-[0.98] transition-all flex items-center justify-center">
@@ -66,8 +62,7 @@
           <form id="forgotForm" onsubmit="handleForgotPassword(event)" class="space-y-4">
             <div>
               <label class="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2 ml-1">Email Terdaftar</label>
-              <input type="email" id="forgotEmail" placeholder="nama@email.com" 
-                class="w-full px-5 py-4 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-700 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 text-gray-900 dark:text-white outline-none transition-all" required>
+              <input type="email" id="forgotEmail" placeholder="nama@email.com" class="w-full px-5 py-4 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-700 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 text-gray-900 dark:text-white outline-none transition-all" required>
             </div>
             <div class="pt-2 flex flex-col gap-3">
               <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-500/30 active:scale-95 transition-all">
@@ -87,7 +82,7 @@
       </p>
     </div>
   </div>
-  <script src="<?= base_url('js/forget.js') ?>"></script>
-  <script type="module" src="<?= base_url('js/login.js') ?>"></script>
+  <script src="<?= base_url('js/forget.js?v=1.0') ?>"></script>
+  <script type="module" src="<?= base_url('js/login.js?v=1.0') ?>"></script>
 </body>
 </html>

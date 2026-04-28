@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="<?= base_url('css/dashboard.css') ?>">
   <link rel="stylesheet" href="<?= base_url('tailwindcss/output.css') ?>">
   <link rel="stylesheet" href="<?= base_url('sweetalert/sweetalert2.min.css') ?>">
-
   <script src="<?= base_url('sweetalert/sweetalert2.all.min.js') ?>"></script>
   <script src="<?= base_url('js/chart.js') ?>"></script>
   <script src="<?= base_url('js/feather/feather.min.js') ?>"></script>
@@ -45,8 +44,8 @@
     <i data-feather="arrow-up"></i>
   </button>
 
-  <script src="<?= base_url('js/main.js') ?>"></script>
-  <script type="module" src="<?= base_url('js/dashboard.js') ?>"></script>
-  <script type="module" src="<?= base_url('js/users.js') ?>"></script>
+  <script src="<?= base_url('js/main.js?v=1.0') ?>"></script>
+  <script type="module" src="<?= base_url('js/dashboard.js?v=1.0') ?>"></script>
+  <script type="module" src="<?= base_url('js/users.js?v=1.0') ?>"></script>
 </body>
 </html>

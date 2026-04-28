@@ -4,11 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Reset Password | API Admin Panel</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="https://unpkg.com/feather-icons"></script>
   <link rel="stylesheet" href="<?= base_url('css/dashboard.css') ?>">
-  <script src="<?= base_url('js/header.js') ?>"></script>
+  <link rel="stylesheet" href="<?= base_url('tailwindcss/output.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('sweetalert/sweetalert2.min.css') ?>">
+  <script src="<?= base_url('js/header.js?v=1.0') ?>"></script>
+  <script src="<?= base_url('sweetalert/sweetalert2.all.min.js') ?>"></script>
+  <script src="<?= base_url('js/feather/feather.min.js') ?>"></script>
 </head>
 <body class="bg-mesh min-h-screen flex items-center justify-center p-6">
   <div class="w-full max-w-md relative">
@@ -52,6 +53,6 @@
         </p>
     </div>
   </div>
-  <script src="<?= base_url('js/forget.js') ?>"></script>
+  <script src="<?= base_url('js/forget.js?v=1.0') ?>"></script>
 </body>
 </html>
