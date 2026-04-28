@@ -46,7 +46,7 @@ window.addStoreRow = (storeId = '', roleInStore = 'staff', isDefault = false) =>
           <option value="staff" ${roleInStore === 'staff' ? 'selected' : ''}>Staff</option>
         </select>
       </div>
-      <button type="button" onclick="document.getElementById('${rowId}').remove()" class="text-red-500 hover:bg-red-50 p-2 rounded-lg transition-colors">
+      <button type="button" onclick="document.getElementById('${rowId}').remove()" class="cursor-pointer text-red-500 hover:bg-red-50 p-2 rounded-lg transition-colors">
         <i data-feather="trash-2" class="w-4 h-4"></i>
       </button>
     </div>`;
