@@ -7,7 +7,7 @@
           </div>
         <div class="flex flex-col items-end">
           <div class="flex items-center space-x-2">
-            <div class="flex items-center bg-white dark:bg-gray-800 px-4 py-2.5 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 text-sm font-bold text-gray-600">
+            <div class="hidden sm:flex items-center bg-white dark:bg-gray-800 px-4 py-2.5 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 text-sm font-bold text-gray-600">
               <i data-feather="calendar" class="w-4 h-4 mr-2 text-blue-500"></i>
               <span class="font-black text-gray-500 dark:text-gray-400" id="currentDateDisplay">Memuat...</span>
             </div>
@@ -15,7 +15,7 @@
               <i id="darkModeIcon" data-feather="moon"></i>
             </button>
           </div>
-          <div class="mt-1.5 mr-1 flex items-center">
+          <div class="hidden sm:flex mt-1.5 mr-1 flex items-center">
             <span class="text-[10px] font-extrabold text-gray-400 uppercase tracking-[0.2em]">
               Your IP: <span id="userIpDisplay" class="text-blue-500 dark:text-blue-400"></span>
             </span>
