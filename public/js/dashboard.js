@@ -23,6 +23,8 @@ let currentLogPage      = 1;
 let currentUserPage     = 1;
 let currentApiKeyPage   = 1;
 let currentStorePage    = 1;
+let statsInterval       = null;
+
 // --- Helper ---
 const escapeHtml = (str) => {
   if (!str) return "";
@@ -238,53 +240,55 @@ function renderLogChartByEmailDaily() {
 }
 
 function renderLogChartDaily() {
-  const canvas          = document.getElementById('logChartDaily');
+  const canvas    = document.getElementById('logChartDaily');
   if (!canvas) return;
   if (window.mychartDaily) window.mychartDaily.destroy();
-  const isDark          = document.documentElement.classList.contains('dark');
-  const textColor       = isDark ? '#94a3b8' : '#64748b';
-  const gridColor       = isDark ? '#334155' : '#e2e8f0';
+
+  const isDark    = document.documentElement.classList.contains('dark');
+  const textColor = isDark ? '#94a3b8' : '#64748b';
+  const gridColor = isDark ? '#334155' : '#e2e8f0';
+
   if (!logsdaily || logsdaily.length === 0) return;
-  const grouped         = {};
+
+  // 1. Kelompokkan data berdasarkan tanggal
+  const grouped   = {};
   logsdaily.forEach(item => {
     if (!grouped[item.log_date]) grouped[item.log_date] = {};
     grouped[item.log_date][item.status_code] = item.total;
   });
-  const labels          = Object.keys(grouped);
-  const statusCodes     = [...new Set(logsdaily.map(item => item.status_code))];
-  const getStatusColor  = (code) => {
-    if (code >= 200 && code < 300) return '#10b981'; // Success
-    if (code >= 400 && code < 500) return '#f59e0b'; // Warning/Client Error
-    if (code >= 500) return '#ef4444';               // Danger/Server Error
-    return '#64748b';
+
+  const labels      = Object.keys(grouped).sort(); // Urutkan tanggal
+  const statusCodes = [...new Set(logsdaily.map(item => item.status_code))];
+
+  const getStatusColor = (code) => {
+    const c = parseInt(code);
+    if (c >= 200 && c < 300) return '#10b981'; // Success (Emerald)
+    if (c >= 400 && c < 500) return '#f59e0b'; // Warning (Amber)
+    if (c >= 500) return '#ef4444';           // Error (Red)
+    return '#6366f1';                         // Default (Indigo)
   };
 
-  const datasets        = statusCodes.map(code => {
-    const color         = getStatusColor(parseInt(code));
+  // 2. Buat Datasets (Tipe Bar)
+  const datasets  = statusCodes.map(code => {
+    const color   = getStatusColor(code);
     return {
       label: `Status ${code}`,
       data: labels.map(date => grouped[date][code] || 0),
-      borderColor: color,
-      backgroundColor: isDark ? color + '20' : color + '10',
-      fill: true, // Memberikan efek area di bawah garis
-      tension: 0.4, // Membuat garis melengkung lembut (Smooth)
-      pointRadius: 4,
-      pointHoverRadius: 6,
-      pointBackgroundColor: color,
-      borderWidth: 3
+      backgroundColor: color,
+      borderRadius: 6, // Membuat ujung bar tumpul agar modern
+      barPercentage: 0.8, // Mengatur lebar bar individu
+      maxBarThickness: 40,     // Batas lebar maksimal (dalam pixel) agar tidak terlalu lebar saat data cuma 1
+      categoryPercentage: 0.8 // Mengatur jarak antar kelompok tanggal
     };
   });
-  const ctx             = canvas.getContext('2d');
-  window.mychartDaily   = new Chart(ctx, {
-    type: 'line', // Diubah ke Line agar tren waktu lebih jelas
+
+  const ctx           = canvas.getContext('2d');
+  window.mychartDaily = new Chart(ctx, {
+    type: 'bar', // Ubah ke Bar
     data: { labels, datasets },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      interaction: {
-        mode: 'index',
-        intersect: false,
-      },
       plugins: {
         legend: {
           position: 'bottom',
@@ -292,30 +296,37 @@ function renderLogChartDaily() {
             color: textColor,
             usePointStyle: true,
             pointStyle: 'circle',
-            font: { family: "'Plus Jakarta Sans'", size: 11, weight: '600' }
+            font: { family: "'Plus Jakarta Sans'", size: 11, weight: '600' },
+            padding: 20
           }
         },
         tooltip: {
+          mode: 'index',
+          intersect: false,
           backgroundColor: isDark ? '#1e293b' : '#ffffff',
           titleColor: isDark ? '#f8fafc' : '#1e293b',
           bodyColor: isDark ? '#cbd5e1' : '#64748b',
           borderColor: gridColor,
           borderWidth: 1,
           padding: 12,
-          cornerRadius: 8
+          cornerRadius: 12
         }
       },
       scales: {
         x: {
-          ticks: { color: textColor, font: { size: 10 } },
+          // KONFIGURASI UTAMA: Agar bar bersebelahan (bukan menumpuk)
+          stacked: false,
+          ticks: { color: textColor, font: { size: 10, weight: '600' } },
           grid: { display: false }
         },
         y: {
+          stacked: false,
           beginAtZero: true,
           ticks: {
-            color: textColor,
-            font: { size: 10 },
-            stepSize: 1 // Opsional: agar angka y-axis bulat
+              color: textColor,
+              font: { size: 10 },
+              stepSize: 1,
+              callback: (value) => value.toLocaleString() // Format ribuan
           },
           grid: { color: gridColor, drawBorder: false }
         }
@@ -602,7 +613,8 @@ function renderStoreTable() {
     return;
   }
   const role = (localStorage.getItem('role') || '').toLowerCase();
-  const canDelete = role !== 'staff'; // Staff tidak bisa delete
+  const canDelete = role !== 'user'; // Staff tidak bisa delete
+  const canEdit   = role !== 'user';
   // Render UI Baris
   let html = displayedStores.map((store, index) => {
 return `
@@ -644,12 +656,13 @@ return `
       <div class="text-[11px] text-slate-600 dark:text-slate-400 font-mono font-bold">${store.created_at || '-'}</div>
     </td>
     <td class="px-6 py-4 text-right">
-      <div class="flex justify-center space-x-1">
+    <div class="flex justify-center space-x-1">
+        ${canEdit ? `
         <button onclick="openEditStore('${store.id}', '${store.name}', '${store.address}', '${store.email}', '${store.phone}', '${store.contact_person}', '${store.contact_phone}')" 
                 class="p-2 text-gray-400 hover:text-yellow-600 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 rounded-xl transition-all" 
                 title="Edit">
           <i data-feather="edit-2" class="w-4 h-4"></i>
-        </button>
+        </button>` : ''}
         ${canDelete ? `
         <button onclick="deleteStore('${store.id}')"
                 class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all"
@@ -968,6 +981,9 @@ function renderUserTable() {
       const roleBadge = u.role.toLowerCase() === 'superadmin'
         ? `<span class="px-2.5 py-1 bg-violet-50 text-violet-700 border border-violet-200 dark:bg-violet-500/10 dark:text-violet-400 dark:border-violet-500/20 rounded-lg text-[10px] font-extrabold uppercase tracking-widest shadow-sm">${u.role}</span>`
         : `<span class="px-2.5 py-1 bg-indigo-50 text-indigo-700 border border-indigo-200 dark:bg-indigo-500/10 dark:text-indigo-400 dark:border-indigo-500/20 rounded-lg text-[10px] font-extrabold uppercase tracking-widest shadow-sm">${u.role}</span>`;
+      const roleButton      = (localStorage.getItem('role') || '').toLowerCase();
+      const canButtonDelete = roleButton !== 'user'; // Staff tidak bisa delete
+      const canButtonEdit   = roleButton !== 'user';
 
       return `
         <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors border-b border-gray-50 dark:border-gray-700/50">
@@ -977,12 +993,12 @@ function renderUserTable() {
           <td class="px-6 py-4 whitespace-nowrap">${roleBadge}</td>
           <td class="px-6 py-4 whitespace-nowrap text-center">
             <div class="flex justify-center space-x-1">
-              <button onclick="openEdit(${u.id}, '${escapeHtml(u.name)}', '${escapeHtml(u.email)}', '${escapeHtml(u.role)}')" class="p-2 text-gray-400 hover:text-yellow-600 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 rounded-xl transition-all" title="Edit User">
+              ${canButtonEdit ? `<button onclick="openEdit(${u.id}, '${escapeHtml(u.name)}', '${escapeHtml(u.email)}', '${escapeHtml(u.role)}')" class="p-2 text-gray-400 hover:text-yellow-600 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 rounded-xl transition-all" title="Edit User">
                 <i data-feather="edit-3" class="w-4 h-4"></i>
-              </button>
-              <button onclick="deleteUser(${u.id})" class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all" title="Delete User">
+              </button>` : ''}
+              ${canButtonDelete ? `<button onclick="deleteUser(${u.id})" class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all" title="Delete User">
                 <i data-feather="trash-2" class="w-4 h-4"></i>
-              </button>
+              </button>` : ''}
             </div>
           </td>
         </tr>`;
@@ -1331,6 +1347,31 @@ window.deleteFilteredLogs = async () => {
   }
 };
 
+async function getClientIp() {
+  try {
+    const response    = await fetch('https://api.ipify.org?format=json');
+    const data        = await response.json();
+    const ipElement   = document.getElementById('userIpDisplay');
+    if (ipElement) {
+      ipElement.textContent = data.ip;
+    }
+  } catch (error) {
+    console.error("Gagal mengambil IP:", error);
+    document.getElementById('userIpDisplay').textContent = "Hidden/Proxy";
+  }
+}
+
+function startAutoRefreshStats() {
+  if (statsInterval) clearInterval(statsInterval);
+  statsInterval = setInterval(() => {
+    if (!document.hidden) {
+      console.log("Auto-refreshing dashboard stats...");
+      loadDashboardStats();
+      loadLogs();
+    }
+  }, 30000); // 30.000 ms = 30 detik
+}
+
 // --- Inisialisasi Saat Halaman Dimuat ---
 document.addEventListener('DOMContentLoaded', () => {
     // === Hide menu API Logs jika bukan admin ===
@@ -1339,8 +1380,10 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById("menuUser")?.style.setProperty("display", "none");
       // document.getElementById("menuAPIKey")?.style.setProperty("display", "none");
     }
-    if (userRole === 'staff') {
+    if (userRole === 'user') {
       document.getElementById('menuUser')?.classList.add('hidden');
+      document.getElementById('btnDeleteAllLog')?.classList.add('hidden');
+      document.getElementById('btnDeleteFilteredLog')?.classList.add('hidden');
     }
     // --- Date Range Logic ---
     const today     = new Date();
@@ -1415,6 +1458,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // LOAD DATA AWAL (Ini yang bikin chart langsung muncul)
     loadDashboardStats();
     loadLogs();
+    getClientIp();
+    startAutoRefreshStats();
 });
 
 // 1. Buat fungsi resize otomatis

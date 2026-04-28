@@ -5,15 +5,22 @@
             <h1 class="text-3xl font-black text-gray-900 tracking-tight">System Overview</h1>
             <p class="text-gray-500 font-medium">Monitoring your API health and statistics</p>
           </div>
-          <div class="flex items-center space-x-3">
-            <div class="hidden sm:flex items-center bg-white px-4 py-2 rounded-xl shadow-sm border border-gray-100 text-sm font-bold text-gray-600">
+        <div class="flex flex-col items-end">
+          <div class="flex items-center space-x-2">
+            <div class="flex items-center bg-white dark:bg-gray-800 px-4 py-2.5 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 text-sm font-bold text-gray-600">
               <i data-feather="calendar" class="w-4 h-4 mr-2 text-blue-500"></i>
-              <span class="font-black text-gray-500" id="currentDateDisplay">Memuat...</span>
+              <span class="font-black text-gray-500 dark:text-gray-400" id="currentDateDisplay">Memuat...</span>
             </div>
-            <button onclick="toggleDarkMode()" class="p-2.5 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 text-gray-500 dark:text-yellow-400 hover:scale-110 transition-all">
+            <button onclick="toggleDarkMode()" class="px-3 p-2 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 text-gray-500 dark:text-yellow-400 hover:scale-110 transition-all">
               <i id="darkModeIcon" data-feather="moon"></i>
             </button>
           </div>
+          <div class="mt-1.5 mr-1 flex items-center">
+            <span class="text-[10px] font-extrabold text-gray-400 uppercase tracking-[0.2em]">
+              Your IP: <span id="userIpDisplay" class="text-blue-500 dark:text-blue-400"></span>
+            </span>
+          </div>
+        </div>
         </header>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div id="cardTotalRequests" class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 transition-hover hover:shadow-md">

@@ -16,7 +16,7 @@
                 <button onclick="window.location='/api/v1/export-pdf?start='+logStartDate.value+'&end='+logEndDate.value" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all shadow-sm flex items-center">
                   <i data-feather="download" class="w-4 h-4 mr-2"></i> PDF
                 </button>
-                <button onclick="clearLogs()" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all shadow-sm flex items-center">
+                <button id="btnDeleteAllLog" onclick="clearLogs()" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all shadow-sm flex items-center">
                   <i data-feather="trash-2" class="w-4 h-4 mr-2"></i> Clear All Log
                 </button>
               </div>
@@ -36,7 +36,7 @@
                 <button onclick="loadLogs()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white p-2.5 rounded-lg text-sm font-bold transition-all flex items-center justify-center shadow-sm">
                   <i data-feather="filter" class="w-4 h-4 mr-2"></i> Apply Filter
                 </button>
-                <button onclick="deleteFilteredLogs()" class="flex-1 bg-red-100 hover:bg-red-200 text-red-600 p-2.5 rounded-lg text-sm font-bold transition-all flex items-center justify-center border border-red-200 shadow-sm" title="Hapus Data Terfilter">
+                <button id="btnDeleteFilteredLog" onclick="deleteFilteredLogs()" class="flex-1 bg-red-100 hover:bg-red-200 text-red-600 p-2.5 rounded-lg text-sm font-bold transition-all flex items-center justify-center border border-red-200 shadow-sm" title="Hapus Data Terfilter">
                   <i data-feather="trash-2" class="w-4 h-4 mr-2"></i> Delete Filtered Log
                 </button>
               </div>
