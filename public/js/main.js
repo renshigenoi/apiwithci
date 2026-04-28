@@ -26,7 +26,7 @@ window.showSection = (id) => {
     }
     // 4. Update UI Menu Aktif
     document.querySelectorAll('.menu-item').forEach(btn => {
-        btn.classList.remove('active', 'bg-gray-700');
+        btn.classList.remove('active', 'bg-gray-800', 'text-white');
     });
     const menuMapping = {
         'dashboardSection': 'menuDashboard',
@@ -36,7 +36,7 @@ window.showSection = (id) => {
         'storeSection'    : 'menuStore'
     };
     const activeMenu = document.getElementById(menuMapping[id]);
-    if (activeMenu) activeMenu.classList.add('active');
+    if (activeMenu) activeMenu.classList.add('active', 'bg-gray-800', 'text-white');
     // 5. Load data (Tanpa duplikasi)
     switch (id) {
         case 'dashboardSection':

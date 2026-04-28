@@ -211,3 +211,45 @@ html.dark .paging-footer {
 .paging-footer span {
     color: #94a3b8 !important; /* Slate 400 */
 }
+/* --- 6. SIDEBAR MENU INDICATOR --- */
+
+/* Base style untuk button menu */
+.menu-item {
+    position: relative;
+    overflow: hidden; /* Penting agar garis tidak bocor keluar rounded */
+}
+
+/* Garis Indikator Biru (Hidden by default) */
+.menu-item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 25%;    /* Garis tidak full dari atas ke bawah agar elegan */
+    bottom: 25%;
+    width: 4px;
+    background-color: #3b82f6; /* Blue 500 */
+    border-radius: 0 4px 4px 0;
+    transform: translateX(-10px); /* Sembunyi di kiri */
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Muncul saat Hover */
+.menu-item:hover::before {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+/* Muncul saat Menu Aktif (Jika class 'active' ditambahkan via JS) */
+.menu-item.active::before {
+    transform: translateX(0);
+    opacity: 1;
+    top: 20%;    /* Lebih panjang sedikit saat aktif */
+    bottom: 20%;
+    background-color: #60a5fa; /* Warna lebih terang sedikit saat aktif */
+}
+
+/* Efek teks bergeser sedikit saat hover agar dinamis */
+.menu-item:hover {
+    @apply pl-6; /* Tailwind padding left ditingkatkan saat hover */
+}

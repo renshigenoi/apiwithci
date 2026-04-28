@@ -8,7 +8,7 @@
             </div>
             <h2 id="apiKeyModalTitle" class="text-xl font-bold text-gray-800 dark:text-white">API Key Manager</h2>
           </div>
-          <button type="button" onclick="closeModal('apiKeyModal')" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
+          <button type="button" onclick="closeModal('apiKeyModal')" class="cursor-pointer text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
             <i data-feather="x"></i>
           </button>
         </div>
@@ -47,7 +47,7 @@
               <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Your Secret API Key</label>
               <div class="flex w-full bg-gray-50 dark:bg-gray-800 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden focus-within:border-blue-500 transition-all shadow-sm">
                 <input type="text" id="generatedKey" readonly class="flex-1 bg-transparent p-4 font-mono text-sm text-blue-600 dark:text-blue-400 focus:outline-none tracking-tight min-w-0">
-                <button type="button" onclick="copyApiKey()" class="px-5 bg-gray-100 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-blue-600 hover:text-blue-600 text-gray-500 transition-all border-l border-gray-200 dark:border-gray-600 flex items-center justify-center" title="Copy to Clipboard">
+                <button type="button" onclick="copyApiKey()" class="cursor-pointer px-5 bg-gray-100 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-blue-600 hover:text-blue-600 text-gray-500 transition-all border-l border-gray-200 dark:border-gray-600 flex items-center justify-center" title="Copy to Clipboard">
                   <i data-feather="copy" class="w-5 h-5"></i>
                 </button>
               </div>
@@ -56,15 +56,15 @@
         </div>
         <div class="p-6 border-t dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50">
           <div id="footerStep1" class="flex gap-3">
-            <button type="button" onclick="closeModal('apiKeyModal')" class="flex-1 px-4 py-4 border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-300 rounded-2xl hover:bg-white dark:hover:bg-gray-800 transition-all font-bold">
+            <button type="button" onclick="closeModal('apiKeyModal')" class="cursor-pointer flex-1 px-4 py-4 border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-300 rounded-2xl hover:bg-white dark:hover:bg-gray-800 transition-all font-bold">
               Batal
             </button>
-            <button type="button" id="saveApiKeyBtn" class="flex-1 px-4 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold shadow-lg shadow-blue-200 dark:shadow-none transition-all active:scale-95">
+            <button type="button" id="saveApiKeyBtn" class="cursor-pointer flex-1 px-4 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold shadow-lg shadow-blue-200 dark:shadow-none transition-all active:scale-95">
               Generate Key
             </button>
           </div>
           <div id="footerStep2" class="hidden">
-            <button type="button" onclick="closeModal('apiKeyModal')" class="w-full px-4 py-4 bg-gray-900 dark:bg-slate-800 hover:bg-black dark:hover:bg-slate-700 text-white rounded-2xl font-bold transition-all shadow-xl">
+            <button type="button" onclick="closeModal('apiKeyModal')" class="cursor-pointer w-full px-4 py-4 bg-gray-900 dark:bg-slate-800 hover:bg-black dark:hover:bg-slate-700 text-white rounded-2xl font-bold transition-all shadow-xl">
               Saya Sudah Simpan & Paham
             </button>
           </div>

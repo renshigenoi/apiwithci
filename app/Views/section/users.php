@@ -8,7 +8,7 @@
                 Manage system administrators and staff members
               </p>
             </div>
-            <button onclick="openAddModal()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl text-sm font-bold transition-all flex items-center shadow-lg shadow-green-500/25 active:scale-95">
+            <button onclick="openAddModal()" class="cursor-pointer bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl text-sm font-bold transition-all flex items-center shadow-lg shadow-green-500/25 active:scale-95">
               <i data-feather="user-plus" class="w-4 h-4 mr-2"></i> Add New User
             </button>
           </div>
@@ -54,10 +54,10 @@
               Showing 0 of 0 users
             </span>
             <div class="flex gap-2">
-              <button onclick="prevUserPage()" id="btnPrevUser" class="flex items-center px-4 py-2 bg-white border border-gray-200 rounded-lg text-xs font-bold text-gray-600 hover:bg-gray-50 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest">
+              <button onclick="prevUserPage()" id="btnPrevUser" class="cursor-pointer flex items-center px-4 py-2 bg-white border border-gray-200 rounded-lg text-xs font-bold text-gray-600 hover:bg-gray-50 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest">
                 <i data-feather="chevron-left" class="w-4 h-4 mr-1"></i> Prev
               </button>
-              <button onclick="nextUserPage()" id="btnNextUser" class="flex items-center px-4 py-2 bg-white border border-gray-200 rounded-lg text-xs font-bold text-gray-600 hover:bg-gray-50 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest">
+              <button onclick="nextUserPage()" id="btnNextUser" class="cursor-pointer flex items-center px-4 py-2 bg-white border border-gray-200 rounded-lg text-xs font-bold text-gray-600 hover:bg-gray-50 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest">
                 Next <i data-feather="chevron-right" class="w-4 h-4 ml-1"></i>
               </button>
             </div>

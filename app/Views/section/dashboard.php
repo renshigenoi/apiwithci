@@ -11,7 +11,7 @@
               <i data-feather="calendar" class="w-4 h-4 mr-2 text-blue-500"></i>
               <span class="font-black text-gray-500 dark:text-gray-400" id="currentDateDisplay">Memuat...</span>
             </div>
-            <button onclick="toggleDarkMode()" class="px-3 p-2 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 text-gray-500 dark:text-yellow-400 hover:scale-110 transition-all">
+            <button onclick="toggleDarkMode()" class="cursor-pointer px-3 p-2 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 text-gray-500 dark:text-yellow-400 hover:scale-110 transition-all">
               <i id="darkModeIcon" data-feather="moon"></i>
             </button>
           </div>
@@ -96,13 +96,13 @@
                 </div>
               </div>
               <div class="flex flex-wrap gap-2 lg:self-end">
-                <button onclick="loadLogs()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-sm flex-1 lg:flex-none">
+                <button onclick="loadLogs()" class="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-sm flex-1 lg:flex-none">
                   Filter
                 </button>
-                <button onclick="window.location='/api/v1/export-excel?start='+startDate.value+'&end='+endDate.value" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-sm flex-1 lg:flex-none">
+                <button onclick="window.location='/api/v1/export-excel?start='+startDate.value+'&end='+endDate.value" class="cursor-pointer bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-sm flex-1 lg:flex-none">
                   Excel
                 </button>
-                <button onclick="window.location='/api/v1/export-pdf?start='+startDate.value+'&end='+endDate.value" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-sm flex-1 lg:flex-none">
+                <button onclick="window.location='/api/v1/export-pdf?start='+startDate.value+'&end='+endDate.value" class="cursor-pointer bg-red-600 hover:bg-red-700 text-white px-4 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-sm flex-1 lg:flex-none">
                   PDF
                 </button>
               </div>

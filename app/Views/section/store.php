@@ -8,7 +8,7 @@
                 Manage store information and contacts
               </p>
             </div>
-            <button onclick="openAddStoreModal()" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl text-sm font-bold transition-all flex items-center shadow-lg shadow-red-500/25 active:scale-95">
+            <button onclick="openAddStoreModal()" class="cursor-pointer bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl text-sm font-bold transition-all flex items-center shadow-lg shadow-red-500/25 active:scale-95">
               <i data-feather="box" class="w-4 h-4 mr-2"></i> Add New Store
             </button>
           </div>
@@ -54,10 +54,10 @@
               Showing 0 of 0 stores
             </span>
             <div class="flex gap-2">
-              <button onclick="prevStorePage()" id="btnPrevStore" class="flex items-center px-4 py-2 bg-white border border-gray-200 rounded-lg text-xs font-bold text-gray-600 hover:bg-gray-50 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest">
+              <button onclick="prevStorePage()" id="btnPrevStore" class="cursor-pointer flex items-center px-4 py-2 bg-white border border-gray-200 rounded-lg text-xs font-bold text-gray-600 hover:bg-gray-50 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest">
                 <i data-feather="chevron-left" class="w-4 h-4 mr-1"></i> Prev
               </button>
-              <button onclick="nextStorePage()" id="btnNextStore" class="flex items-center px-4 py-2 bg-white border border-gray-200 rounded-lg text-xs font-bold text-gray-600 hover:bg-gray-50 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest">
+              <button onclick="nextStorePage()" id="btnNextStore" class="cursor-pointer flex items-center px-4 py-2 bg-white border border-gray-200 rounded-lg text-xs font-bold text-gray-600 hover:bg-gray-50 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest">
                 Next <i data-feather="chevron-right" class="w-4 h-4 ml-1"></i>
               </button>
             </div>

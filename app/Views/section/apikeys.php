@@ -8,7 +8,7 @@
                 Manage access keys for your integration
               </p>
             </div>
-            <button onclick="openGenerateKeyModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl text-sm font-bold transition-all flex items-center shadow-lg shadow-blue-500/25 active:scale-95">
+            <button onclick="openGenerateKeyModal()" class="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl text-sm font-bold transition-all flex items-center shadow-lg shadow-blue-500/25 active:scale-95">
               <i data-feather="plus" class="w-4 h-4 mr-2"></i> Generate New Key
             </button>
           </div>
@@ -49,11 +49,11 @@
               Showing 0 of 0 keys
             </span>
             <div class="flex space-x-2">
-              <button onclick="prevApiKeyPage()" id="btnPrevApiKey" class="flex items-center px-4 py-2 bg-white border border-gray-200 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-50 transition shadow-sm disabled:opacity-30 disabled:cursor-not-allowed uppercase tracking-[0.1em]">
-                <i data-feather="chevron-left" class="w-4 h-4 mr-1.5"></i> 
+              <button onclick="prevApiKeyPage()" id="btnPrevApiKey" class="cursor-pointer flex items-center px-4 py-2 bg-white border border-gray-200 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-50 transition shadow-sm disabled:opacity-30 disabled:cursor-not-allowed uppercase tracking-[0.1em]">
+                <i data-feather="chevron-left" class="w-4 h-4 mr-1.5"></i>
                 Prev
               </button>
-              <button onclick="nextApiKeyPage()" id="btnNextApiKey" class="flex items-center px-4 py-2 bg-white border border-gray-200 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-50 transition-all active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed uppercase tracking-[0.1em] shadow-sm">
+              <button onclick="nextApiKeyPage()" id="btnNextApiKey" class="cursor-pointer flex items-center px-4 py-2 bg-white border border-gray-200 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-50 transition-all active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed uppercase tracking-[0.1em] shadow-sm">
                 Next <i data-feather="chevron-right" class="w-4 h-4 ml-1.5"></i>
               </button>
             </div>
@@ -66,17 +66,17 @@
               <span id="selectedCount">0</span> Selected
             </span>
             <div class="flex items-center gap-3">
-              <button onclick="bulkApiKeyUpdateStatus(1)" class="flex items-center gap-2 px-3 py-2 hover:bg-emerald-500/10 hover:text-emerald-500 rounded-lg transition-all text-sm font-semibold">
+              <button onclick="bulkApiKeyUpdateStatus(1)" class="cursor-pointer flex items-center gap-2 px-3 py-2 hover:bg-emerald-500/10 hover:text-emerald-500 rounded-lg transition-all text-sm font-semibold">
                 <i data-feather="check-circle" class="w-4 h-4"></i> Activate
               </button>
-              <button onclick="bulkApiKeyUpdateStatus(2)" class="flex items-center gap-2 px-3 py-2 hover:bg-amber-500/10 hover:text-amber-500 rounded-lg transition-all text-sm font-semibold">
+              <button onclick="bulkApiKeyUpdateStatus(2)" class="cursor-pointer flex items-center gap-2 px-3 py-2 hover:bg-amber-500/10 hover:text-amber-500 rounded-lg transition-all text-sm font-semibold">
                 <i data-feather="pause-circle" class="w-4 h-4"></i> Suspend
               </button>
-              <button onclick="bulkApiKeyDelete()" class="flex items-center gap-2 px-3 py-2 hover:bg-red-500/10 hover:text-red-500 rounded-lg transition-all text-sm font-semibold">
+              <button onclick="bulkApiKeyDelete()" class="cursor-pointer flex items-center gap-2 px-3 py-2 hover:bg-red-500/10 hover:text-red-500 rounded-lg transition-all text-sm font-semibold">
                 <i data-feather="trash-2" class="w-4 h-4"></i> Revoke
               </button>
             </div>
-            <button onclick="clearApiSelection()" class="ml-2 p-2 hover:bg-slate-700 dark:hover:bg-slate-100 rounded-full transition-all">
+            <button onclick="clearApiSelection()" class="cursor-pointer ml-2 p-2 hover:bg-slate-700 dark:hover:bg-slate-100 rounded-full transition-all">
               <i data-feather="x" class="w-4 h-4"></i>
             </button>
           </div>

@@ -3,7 +3,7 @@
       <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-md transform transition-all overflow-hidden border dark:border-gray-800 flex flex-col">
         <div class="p-6 border-b dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 flex justify-between items-center">
           <h2 id="modalTitle" class="text-xl font-bold text-gray-800 dark:text-white text-center">Store Form</h2>
-          <button type="button" onclick="closeModal('storeModal')" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
+          <button type="button" onclick="closeModal('storeModal')" class="cursor-pointer text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
             <i data-feather="x"></i>
           </button>
         </div>
@@ -42,10 +42,10 @@
             </div>
           </div>
           <div class="p-6 border-t dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 flex gap-3">
-            <button type="button" onclick="closeModal('storeModal')" class="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-white dark:hover:bg-gray-800 transition-all font-semibold">
+            <button type="button" onclick="closeModal('storeModal')" class="cursor-pointer flex-1 px-4 py-3 border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-white dark:hover:bg-gray-800 transition-all font-semibold">
               Batal
             </button>
-            <button type="submit" id="saveStoreBtn" class="flex-1 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-lg shadow-blue-200 dark:shadow-none transition-all active:scale-95">
+            <button type="submit" id="saveStoreBtn" class="cursor-pointer flex-1 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-lg shadow-blue-200 dark:shadow-none transition-all active:scale-95">
               Simpan Data
             </button>
           </div>

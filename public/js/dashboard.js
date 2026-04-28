@@ -658,15 +658,11 @@ return `
     <td class="px-6 py-4 text-right">
     <div class="flex justify-center space-x-1">
         ${canEdit ? `
-        <button onclick="openEditStore('${store.id}', '${store.name}', '${store.address}', '${store.email}', '${store.phone}', '${store.contact_person}', '${store.contact_phone}')" 
-                class="p-2 text-gray-400 hover:text-yellow-600 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 rounded-xl transition-all" 
-                title="Edit">
+        <button onclick="openEditStore('${store.id}', '${store.name}', '${store.address}', '${store.email}', '${store.phone}', '${store.contact_person}', '${store.contact_phone}')" class="cursor-pointer p-2 text-gray-400 hover:text-yellow-600 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 rounded-xl transition-all" title="Edit">
           <i data-feather="edit-2" class="w-4 h-4"></i>
         </button>` : ''}
         ${canDelete ? `
-        <button onclick="deleteStore('${store.id}')"
-                class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all"
-                title="Hapus">
+        <button onclick="deleteStore('${store.id}')" class="cursor-pointer p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all" title="Hapus">
           <i data-feather="trash-2" class="w-4 h-4"></i>
         </button>` : ''}
       </div>
@@ -733,14 +729,13 @@ function humanizePayload(payloadString) {
 
     // Return tombol yang memicu modal detail
     return `
-      <button onclick="viewLogDetail('${encodeURIComponent(payloadString)}')"
-              class="flex items-center gap-2 hover:opacity-80 transition-opacity group">
-          <div class="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-              <i data-feather="${icon}" class="w-3.5 h-3.5 ${colorClass}"></i>
-          </div>
-          <span class="text-sm font-medium ${colorClass} underline decoration-dotted underline-offset-4">
-              ${title}
-          </span>
+      <button onclick="viewLogDetail('${encodeURIComponent(payloadString)}')" class="cursor-pointer flex items-center gap-2 hover:opacity-80 transition-opacity group">
+        <div class="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+          <i data-feather="${icon}" class="w-3.5 h-3.5 ${colorClass}"></i>
+        </div>
+        <span class="text-sm font-medium ${colorClass} underline decoration-dotted underline-offset-4">
+          ${title}
+        </span>
       </button>
     `;
   } catch (e) {
@@ -948,7 +943,7 @@ function renderApiKeyTable(dataList = null) {
         </div>
       </td>
       <td class="px-6 py-4 whitespace-nowrap text-right">
-        <button onclick="revokeApiKey(${u.id})" class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all" title="Revoke Access">
+        <button onclick="revokeApiKey(${u.id})" class="cursor-pointer p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all" title="Revoke Access">
           <i data-feather="slash" class="w-4 h-4"></i>
         </button>
       </td>
@@ -993,10 +988,10 @@ function renderUserTable() {
           <td class="px-6 py-4 whitespace-nowrap">${roleBadge}</td>
           <td class="px-6 py-4 whitespace-nowrap text-center">
             <div class="flex justify-center space-x-1">
-              ${canButtonEdit ? `<button onclick="openEdit(${u.id}, '${escapeHtml(u.name)}', '${escapeHtml(u.email)}', '${escapeHtml(u.role)}')" class="p-2 text-gray-400 hover:text-yellow-600 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 rounded-xl transition-all" title="Edit User">
+              ${canButtonEdit ? `<button onclick="openEdit(${u.id}, '${escapeHtml(u.name)}', '${escapeHtml(u.email)}', '${escapeHtml(u.role)}')" class="cursor-pointer p-2 text-gray-400 hover:text-yellow-600 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 rounded-xl transition-all" title="Edit User">
                 <i data-feather="edit-3" class="w-4 h-4"></i>
               </button>` : ''}
-              ${canButtonDelete ? `<button onclick="deleteUser(${u.id})" class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all" title="Delete User">
+              ${canButtonDelete ? `<button onclick="deleteUser(${u.id})" class="cursor-pointer p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all" title="Delete User">
                 <i data-feather="trash-2" class="w-4 h-4"></i>
               </button>` : ''}
             </div>

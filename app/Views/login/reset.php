@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Reset Password | API Admin Panel</title>
-  <link rel="stylesheet" href="<?= base_url('css/dashboard.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('css/dashboard.css?v=1.0.1') ?>">
   <link rel="stylesheet" href="<?= base_url('tailwindcss/output.css') ?>">
   <link rel="stylesheet" href="<?= base_url('sweetalert/sweetalert2.min.css') ?>">
   <script src="<?= base_url('js/header.js?v=1.0') ?>"></script>
@@ -14,7 +14,7 @@
 <body class="bg-mesh min-h-screen flex items-center justify-center p-6">
   <div class="w-full max-w-md relative">
     <div class="bg-white dark:bg-gray-800 rounded-[3rem] p-10 shadow-soft border border-white dark:border-gray-700 relative overflow-hidden transition-all duration-300">
-      <button type="button" onclick="toggleDarkMode()" class="absolute top-8 right-8 p-3 bg-gray-50 dark:bg-gray-700 rounded-2xl text-gray-500 dark:text-yellow-400 hover:scale-110 active:scale-95 transition-all border border-gray-100 dark:border-gray-600 shadow-sm z-20">
+      <button type="button" onclick="toggleDarkMode()" class="cursor-pointer absolute top-8 right-8 p-3 bg-gray-50 dark:bg-gray-700 rounded-2xl text-gray-500 dark:text-yellow-400 hover:scale-110 active:scale-95 transition-all border border-gray-100 dark:border-gray-600 shadow-sm z-20">
         <i id="themeIcon" data-feather="moon" class="w-5 h-5"></i>
       </button>
       <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl"></div>
@@ -40,7 +40,7 @@
             <input type="password" id="confirmPassword" placeholder="••••••••" class="w-full px-5 py-4 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-700 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 text-gray-900 dark:text-white outline-none transition-all" required>
           </div>
           <div class="pt-2">
-            <button type="submit" class="w-full bg-gray-900 dark:bg-blue-600 hover:bg-black dark:hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-xl active:scale-[0.98] transition-all">
+            <button type="submit" class="cursor-pointer w-full bg-gray-900 dark:bg-blue-600 hover:bg-black dark:hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-xl active:scale-[0.98] transition-all">
               Update Password
             </button>
           </div>
@@ -53,6 +53,6 @@
         </p>
     </div>
   </div>
-  <script src="<?= base_url('js/forget.js?v=1.0') ?>"></script>
+  <script src="<?= base_url('js/forget.js?v=1.0.1') ?>"></script>
 </body>
 </html>

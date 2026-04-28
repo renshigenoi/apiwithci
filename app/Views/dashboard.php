@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Panel | API Management</title>
-  <link rel="stylesheet" href="<?= base_url('css/dashboard.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('css/dashboard.css?v=1.0.1') ?>">
   <link rel="stylesheet" href="<?= base_url('tailwindcss/output.css') ?>">
   <link rel="stylesheet" href="<?= base_url('sweetalert/sweetalert2.min.css') ?>">
   <script src="<?= base_url('sweetalert/sweetalert2.all.min.js') ?>"></script>
@@ -18,9 +18,9 @@
       <div class="bg-blue-600 p-1.5 rounded-lg mr-3">
         <i data-feather="zap" class="w-5 h-5 text-white"></i>
       </div>
-      <span class="text-white tracking-tight"><a href="#" onclick="showSection('dashboardSection')">My API</a></span>
+      <a href="#" class="cursor-pointer" onclick="showSection('dashboardSection')"><span class="text-white tracking-tight">My API</span></a>
     </div>
-    <button onclick="toggleSidebar()" class="p-2 hover:bg-gray-800 rounded-xl transition-all">
+    <button onclick="toggleSidebar()" class="cursor-pointer p-2 hover:bg-gray-800 rounded-xl transition-all">
       <i data-feather="menu"></i>
     </button>
   </div>
@@ -40,12 +40,12 @@
     <?= view('modal/store'); ?>
   </div>
 
-  <button id="backToTop" class="fixed bottom-20 right-6 z-[60] bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-2xl transition-all duration-300 translate-y-20 opacity-0 focus:outline-none active:scale-90 lg:bottom-10">
+  <button id="backToTop" class="cursor-pointer fixed bottom-20 right-6 z-[60] bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-2xl transition-all duration-300 translate-y-20 opacity-0 focus:outline-none active:scale-90 lg:bottom-10">
     <i data-feather="arrow-up"></i>
   </button>
 
   <script src="<?= base_url('js/main.js?v=1.0') ?>"></script>
-  <script type="module" src="<?= base_url('js/dashboard.js?v=1.0') ?>"></script>
-  <script type="module" src="<?= base_url('js/users.js?v=1.0') ?>"></script>
+  <script type="module" src="<?= base_url('js/dashboard.js?v=1.0.1') ?>"></script>
+  <script type="module" src="<?= base_url('js/users.js?v=1.0.1') ?>"></script>
 </body>
 </html>
