@@ -10,39 +10,39 @@ Aplikasi Dashboard API Log yang dibangun menggunakan **CodeIgniter 4**. Proyek i
 
 ---
 
-## 🚀 Fitur Utama
-- **📊 Visualisasi Data Dinamis**: Integrasi Chart.js (Bar, Line, & Doughnut) untuk pemantauan statistik akses API secara real-time.
-- **🌙 UI/UX Modern & Adaptif**: Antarmuka responsif yang mendukung Dark Mode secara otomatis untuk kenyamanan pengguna.
-- **📧 Integrasi Notifikasi**: Pengiriman notifikasi otomatis melalui SMTP Gmail, Slack, dan Telegram (Webhook).
-- **🔐 Keamanan Tingkat Lanjut**: Manajemen kredensial menggunakan file .env dan autentikasi berbasis JWT/Session yang aman.
-- **🛠️ Log Management & Audit**: Monitoring aktivitas API secara mendalam untuk keperluan debugging dan audit keamanan.
-- **🏢 Store Management (POS-Ready)**: Manajemen data toko/cabang yang siap diintegrasikan dengan sistem Point of Sales.
-- **👥 Arsitektur Multi-Tenant**: Mendukung struktur One-to-Many, memungkinkan satu akun pengguna mengelola banyak toko secara bersamaan.
+## 🚀 Fitur Utama & Keamanan
+-**📊 Visualisasi Data Dinamis**: Integrasi Chart.js (Bar, Line, & Doughnut) untuk pemantauan statistik akses API secara real-time.
+-**🔐 Dual-Layer Authentication**: Proteksi berlapis menggunakan JWT dan X-API-KEY untuk memastikan keamanan identitas pengguna sekaligus perangkat.
+-**📱 Device Binding Technology**: Sistem lisensi yang memungkinkan penguncian akses API khusus untuk perangkat tertentu (Hardware Locking).
+-**🏢 Multi-Tenant Store Management**: Manajemen cabang terpusat dengan isolasi data total antar toko, siap untuk ekspansi skala besar.
+-**🛠️ Deep Log & Audit Trail**: Monitoring aktivitas API mendalam, mencatat siapa, kapan, dan dari perangkat mana sebuah aksi dilakukan.
+-**🌙 UI/UX Modern & Adaptif**: Antarmuka responsif dengan dukungan Dark Mode otomatis untuk efisiensi kerja di berbagai kondisi cahaya.
+-**📧 Integrasi Notifikasi Multichannel**: Sistem peringatan otomatis melalui SMTP Gmail, Slack, dan Telegram Webhook.
 
 ---
 
 ## 🚀 Ringkasan
-
-### 1. Arsitektur Multi-Tenant (User-Store Relationship)
-- **Relasi Many-to-Many:** Mengimplementasikan hubungan antara User dan Store melalui tabel perantara `store_users`. Hal ini memungkinkan satu pengguna mengelola beberapa toko dengan satu akun.
-- **Pengurusan Akses Dinamik:** Menambahkan fungsi untuk menambah/menghapus akses toko secara dinamis melalui modal profil pengguna.
-- **Sistem Kedai Default:** Menambahkan logika `is_default` menggunakan Radio Button untuk menentukan toko mana yang otomatis dimuat saat login.
-
-### 2. Keselamatan & Pengurusan API Key
-- **Two-Step Generation:** Proses pembuatan API key dibagi menjadi dua tahap:
-    - **Fasa Input:** Menetapkan label dan IP Whitelist.
-    - **Fasa Hasil:** Menampilkan *Secret Key* hanya sekali untuk keamanan maksimal.
-- **Input Group UI:** Perbaikan desain bar input API dengan tombol Copy terintegrasi menggunakan Flexbox agar posisi tombol konsisten di semua ukuran layar.
-- **Overlay Protection:** Menambahkan logika agar modal tidak tertutup secara tidak sengaja ketika pengguna mengklik di luar kotak modal saat Secret Key ditampilkan.
-
-### 3. Antaramuka Pengguna (UI/UX) & Mode Gelap
-- **Paging & Navigasi:** Mendesain ulang navigasi tabel (Pagination) dengan tipografi bersih, jarak huruf lebar (*tracking-widest*), dan ikon Feather minimalis.
-- **Sinkronisasi Tema:** Menyelaraskan warna Header dan Footer tabel menggunakan class khusus `.paging-footer` agar warna abu‑abu terang (Slate 50) muncul di *Light Mode* dan biru tua (Navy) di *Dark Mode*.
-- **Sticky Footer Modal:** Struktur modal diperbarui sehingga tombol aksi (Save/Cancel) selalu berada di bagian bawah meskipun konten modal panjang dan perlu digulir.
-
-### 4. Pengurusan Data & Log Audit
-- **Pembersihan Log Berasaskan Tanggal:** Menambahkan fitur *Delete by Range* yang memungkinkan admin menghapus log aktivitas berdasarkan rentang tanggal tertentu untuk pemeliharaan penyimpanan.
-- **Database Transactions:** Menggunakan mekanisme transaksi (*transStart/transComplete*) di CodeIgniter untuk menjaga integritas data saat melakukan pembaruan profil pengguna yang kompleks.
+### 1. Arsitektur Multi-Tenant (Manajemen User & Store)
+- **Relasi Many-to-Many:** Mengimplementasikan hubungan antara User dan Store melalui tabel perantara. Hal ini memungkinkan satu pengguna mengelola banyak cabang toko hanya dengan satu akun (sentralisasi akses).
+- **Manajemen Akses Dinamis:** Penambahan fitur untuk memberikan atau mencabut izin akses toko bagi pengguna secara real-time melalui antarmuka profil.
+- **Default Store Selection:** Implementasi logika toko utama menggunakan Radio Button, sehingga sistem secara otomatis memuat data toko pilihan pengguna saat pertama kali login.
+### 2. Keamanan & Manajemen API Key
+- **Two-Step Generation:** Proses pembuatan API Key yang lebih aman melalui dua tahap:
+	- **Fase Input:** Penentuan label identitas dan IP Whitelisting.
+	- **Fase Output:** Menampilkan Secret Key hanya satu kali (setelah itu di-hash) untuk keamanan maksimal.
+- **Store-Specific Keys:** API Key kini terikat langsung pada store_id, memastikan isolasi data yang ketat agar akses API antar cabang tidak saling tumpang tindih.
+- **Overlay Protection:** Penambahan proteksi pada modal agar tidak tertutup secara tidak sengaja saat informasi sensitif (Secret Key) sedang ditampilkan.
+### 3. Keamanan Berlapis (Dual-Layer Authentication)
+- **Double Lock Security:** Menggabungkan validasi JWT (untuk identitas pengguna) dan X-API-KEY (untuk identitas perangkat/toko) dalam setiap permintaan data.
+- **Device Binding Ready:** Penambahan kolom device_id untuk mempersiapkan sistem lisensi, sehingga akses API dapat dikunci khusus untuk perangkat tertentu saja.
+- **Stateless Global Context:** Optimasi backend menggunakan Shared Services untuk mendistribusikan data identitas toko secara efisien tanpa proses decoding berulang.
+### 4. Pengalaman Pengguna (UI/UX) & Mode Gelap
+- **Navigasi Modern:** Desain ulang sistem Pagination pada tabel dengan tipografi yang bersih, letter-spacing yang lebar, serta penggunaan ikon Feather yang minimalis.
+- **Sinkronisasi Tema Dinamis:** Penyelarasan warna komponen (Header/Footer/Modal) agar tetap kontras dan nyaman di mata, baik pada Light Mode (Slate 50) maupun Dark Mode (Navy/Deep Blue).
+- **Sticky Footer Modal:** Memastikan tombol aksi (Save/Cancel) selalu berada di posisi bawah yang mudah dijangkau, meskipun konten modal sangat panjang.
+### 5. Manajemen Data & Audit Log
+- **Maintenance Log Otomatis:** Fitur penghapusan log berdasarkan rentang tanggal (Delete by Range) untuk menjaga performa database dan kapasitas penyimpanan.
+- **Integritas Database:** Penggunaan mekanisme Database Transactions (transStart/transComplete) pada CodeIgniter untuk menjamin data tetap konsisten dan mencegah korupsi data saat terjadi gangguan proses.
 
 ---
 
