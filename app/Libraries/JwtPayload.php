@@ -11,8 +11,12 @@ class JwtPayload
         $this->data = $payload;
     }
 
-    public function get(): array
+    public function get($key = null)
     {
-        return $this->data;
+        if ($key === null) {
+            return $this->data;
+        }
+
+        return $this->data[$key] ?? null;
     }
 }

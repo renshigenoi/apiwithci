@@ -33,6 +33,7 @@
       <?= view('section/apilogs'); ?>
       <?= view('section/users'); ?>
       <?= view('section/store'); ?>
+      <?= view('section/apidocs'); ?>
     </main>
     <?= view('modal/users'); ?>
     <?= view('modal/storeuser'); ?>

@@ -31,6 +31,10 @@
             <i data-feather="activity" class="w-5 h-5 mr-3"></i>
             <span class="font-semibold text-sm">API Access Logs</span>
           </button>
+          <button onclick="showSection('docsSection')" class="cursor-pointer menu-item group w-full flex items-center px-4 py-3 rounded-xl transition-all duration-200 hover:bg-gray-800 hover:text-white" id="menuDocs">
+            <i data-feather="book-open" class="w-5 h-5 mr-3"></i>
+            <span class="font-semibold text-sm">API Documentation</span>
+          </button>
         </nav>
       </div>
       <div class="p-6 border-t border-gray-800 mt-auto bg-gray-900 shrink-0 pb-safe">

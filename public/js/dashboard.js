@@ -584,11 +584,24 @@ async function loadStores() {
     allStores           = Array.isArray(data) ? data : (data && data.data ? data.data : []);
     currentStorePage    = 1; // Reset ke hal 1 setiap refresh
     renderStoreTable();
+    populateStoreDropdown();
   } catch (error) {
     console.error("Failed to load stores", error);
   } finally {
     showLoading('storeLoading', false);
   }
+}
+
+function populateStoreDropdown() {
+  const storeSelect = document.getElementById('apiKeyStoreID');
+  // Bersihkan opsi lama kecuali yang pertama (Pilih Toko...)
+  storeSelect.innerHTML = '<option value="" selected disabled>Pilih Toko...</option>';
+  allStores.forEach(store => {
+    const option = document.createElement('option');
+    option.value = store.id; // Ini yang akan disimpan ke tabel api_keys.store_id
+    option.textContent = `${store.code} - ${store.name}`; // Tampilan: "KODE - Nama Toko"
+    storeSelect.appendChild(option);
+  });
 }
 
 function renderStoreTable() {
@@ -1000,6 +1013,7 @@ function renderUserTable() {
     }).join('');
 
     updateUserPaginationControls(allUsers.length);
+    loadMasterStores();
     feather.replace();
 }
 
@@ -1100,10 +1114,14 @@ function prevUserPage() {
 
 // --- Modals & API Keys ---
 window.openGenerateKeyModal = () => {
+  populateStoreDropdown();
   document.querySelector('.overflow-y-auto').scrollTop  = 0;
   document.getElementById('apiKeyModal').classList.remove('hidden');
   document.getElementById('keyFormStep').classList.remove('hidden');
+  document.getElementById('footerStep1').classList.remove('hidden');
   document.getElementById('keyResultStep').classList.add('hidden');
+  document.getElementById('footerStep2').classList.add('hidden');
+  document.getElementById('apiKeyStoreID').value        = ""; // Reset pilihan store
   document.getElementById('keyLabel').value             = "";
   document.getElementById('keyIp').value                = "";
   feather.replace();
@@ -1124,12 +1142,17 @@ window.copyApiKey = () => {
 };
 
 const processGenerateKey = async () => {
+  const storeid   = document.getElementById('apiKeyStoreID').value;
   const label     = document.getElementById('keyLabel').value;
   const ip        = document.getElementById('keyIp').value;
   const email     = localStorage.getItem("email");
   const url       = editUserEmail ? `/api/v1/keys/update/${editUserEmail}` : '/api/v1/keys/create';
   const method    = editUserEmail ? 'PUT' : 'POST';
-  const body      = { label, ip, email };
+  const body      = { storeid, label, ip, email };
+  if (!storeid) {
+    Swal.fire('Error', 'Silahkan pilih Store terlebih dahulu!', 'error');
+    return;
+  }
   if (!label) {
     Swal.fire('Error', 'Label harus diisi!', 'error');
     return;
@@ -1368,8 +1391,8 @@ function startAutoRefreshStats() {
 }
 
 // --- Inisialisasi Saat Halaman Dimuat ---
-document.addEventListener('DOMContentLoaded', () => {
-    // === Hide menu API Logs jika bukan admin ===
+// document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {    // === Hide menu API Logs jika bukan admin ===
     const userRole = (localStorage.getItem("role") || "").toLowerCase(); // misalnya role disimpan di localStorage
     if (userRole !== "superadmin") {
       document.getElementById("menuUser")?.style.setProperty("display", "none");
@@ -1451,10 +1474,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Simpan API Keys listener
     document.getElementById('saveApiKeyBtn')?.addEventListener('click', processGenerateKey);
     // LOAD DATA AWAL (Ini yang bikin chart langsung muncul)
-    loadDashboardStats();
-    loadLogs();
-    getClientIp();
-    startAutoRefreshStats();
+    try {
+      await loadDashboardStats();
+      await loadLogs();
+      await getClientIp();
+      await loadStores();
+      await startAutoRefreshStats();
+    } catch (err) {
+      console.error("Failed to load dashboard stats", err);
+    }
 });
 
 // 1. Buat fungsi resize otomatis

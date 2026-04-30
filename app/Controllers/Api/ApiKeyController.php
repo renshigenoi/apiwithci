@@ -38,6 +38,7 @@ class ApiKeyController extends Controller
         $plainKey = 'api_live_' . bin2hex(random_bytes(20));
         $data = [
             'user_email'   => $json->email,
+            'store_id'     => $json->storeid,
             'key_label'    => $json->label,
             'ip_whitelist' => $json->ip ?? null,
             'api_key'      => hash('sha256', $plainKey),

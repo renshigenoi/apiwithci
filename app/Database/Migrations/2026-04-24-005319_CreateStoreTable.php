@@ -52,6 +52,11 @@ class CreateStoreTable extends Migration
                 'null' => true,
                 'default' => null,
             ],
+            'status' => [
+                'type'       => 'ENUM',
+                'constraint' => ['active', 'inactive', 'suspended'],
+                'default'    => 'active',
+            ],
         ]);
 
         $this->forge->addKey('id', true);
@@ -60,6 +65,7 @@ class CreateStoreTable extends Migration
 
         // Menambahkan default current_timestamp secara manual agar lebih presisi sesuai SQL kamu
         $this->db->query("ALTER TABLE `store` MODIFY `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP");
+        $this->db->query("ALTER TABLE `store` MODIFY `updated_at` DATETIME NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP");
     }
 
     public function down()

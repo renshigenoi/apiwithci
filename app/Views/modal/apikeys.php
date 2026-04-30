@@ -15,6 +15,12 @@
         <div class="p-6 overflow-y-auto" style="max-height: 70vh;">
           <div id="keyFormStep" class="space-y-5">
             <div>
+              <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 ml-1">Store</label>
+              <select id="apiKeyStoreID" class="w-full border dark:border-gray-700 dark:bg-gray-800 dark:text-white p-4 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none transition-all shadow-sm">
+                  <option value="" selected disabled>Pilih Toko...</option>
+              </select>
+            </div>
+            <div>
               <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 ml-1">Key Label</label>
               <input type="text" id="keyLabel" placeholder="Contoh: Integrasi Mobile Apps" class="w-full border dark:border-gray-700 dark:bg-gray-800 dark:text-white p-4 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none transition-all shadow-sm" required>
               <p class="text-[10px] text-gray-400 mt-2 ml-1 italic">Gunakan nama yang mudah diingat untuk membedakan fungsi key.</p>

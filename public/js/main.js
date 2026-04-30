@@ -11,6 +11,13 @@ function toggleSidebar(forceClose = false) {
     }
 }
 
+function copyCode(elementId) {
+    const text = document.getElementById(elementId).innerText;
+    navigator.clipboard.writeText(text).then(() => {
+        alert("Code copied to clipboard!");
+    });
+}
+
 window.showSection = (id) => {
     // 1. Sembunyikan semua section
     document.querySelectorAll('main section').forEach(s => s.classList.add('hidden'));
@@ -33,7 +40,8 @@ window.showSection = (id) => {
         'userSection'     : 'menuUser',
         'logsSection'     : 'menuLogs',
         'APIKeySection'   : 'menuAPIKey',
-        'storeSection'    : 'menuStore'
+        'storeSection'    : 'menuStore',
+        'docsSection'     : 'menuDocs'
     };
     const activeMenu = document.getElementById(menuMapping[id]);
     if (activeMenu) activeMenu.classList.add('active', 'bg-gray-800', 'text-white');

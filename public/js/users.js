@@ -184,6 +184,8 @@ window.deleteUser = async (id) => {
   }
 };
 
+window.loadMasterStores      = loadMasterStores;
+
 // --- 4. INITIALIZATION ---
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -198,5 +200,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     // Load Master Store sekali di awal agar saat buka modal tidak lambat
-    loadMasterStores();
+    // loadMasterStores();
 });

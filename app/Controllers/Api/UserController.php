@@ -19,6 +19,16 @@ class UserController extends Controller
         return $this->respond($userModel->findAll());
     }
 
+    public function profile()
+    {
+        $payload = Services::jwtPayload()->get();
+        return $this->respond([
+            'status'    => 'success',
+            'name'      => $payload['name'],
+            'role'      => $payload['role']
+        ]);
+    }
+
     public function update($id = null)
     {
         $payload = Services::jwtPayload()->get();

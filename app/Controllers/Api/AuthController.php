@@ -21,7 +21,8 @@ class AuthController extends ResourceController
             'data'      => [
                 'id'    => $user['id'],
                 'email' => $user['email'],
-                'role'  => $user['role']
+                'role'  => $user['role'],
+                'name'  => $user['name'],   // Tambahkan field nama
             ]
         ];
         $secretKey = env('jwt.secret');
@@ -38,10 +39,11 @@ class AuthController extends ResourceController
             'nbf'       => $issuedAt,      // not before
             'exp'       => $expireAt,      // expired at
             'data'      => [
-                'id'       => $user['id'],
-                'email'    => $user['email'],
-                'role'     => $user['role'],
-                'store_id' => $storeId // Tambahkan ini!
+                'id'        => $user['id'],
+                'email'     => $user['email'],
+                'role'      => $user['role'],
+                'name'      => $user['name'],
+                'store_id'  => $storeId
             ]
         ];
         $secretKey  = env('jwt.secret');
@@ -61,7 +63,8 @@ class AuthController extends ResourceController
             'data' => [
                 'id'    => $user['id'],
                 'email' => $user['email'],
-                'role'  => $user['role']
+                'role'  => $user['role'],
+                'name'  => $user['name'],
             ]
         ];
 
@@ -78,6 +81,7 @@ class AuthController extends ResourceController
         $userModel  = new UserModel();
         $user       = $userModel->where('email', $email)->first();
 
+        // 1. Cek User & Password
         if (!$user || !password_verify($password, $user['password'])) {
             return $this->response->setJSON([
                 'status'    => 'error',
@@ -85,16 +89,27 @@ class AuthController extends ResourceController
             ])->setStatusCode(401);
         }
 
+        // 2. Cek Status Aktif
+        if ($user['is_active'] != 1) {
+            return $this->response->setJSON([
+                'status'    => 'error',
+                'message'   => 'Akun Anda tidak aktif'
+            ])->setStatusCode(403);
+        }
+
         $accessToken    = $this->generateAccessToken($user);
         $refreshToken   = $this->generateRefreshToken($user);
 
         return $this->response->setJSON([
             'status'        => 'success',
-            'message'       => 'Login berhasil',
+            'message'       => 'Authentication successful',
             'access_token'  => $accessToken,
             'refresh_token' => $refreshToken,
+            'token_type'    => 'Bearer',
+            'expires_in'    => 3600, // Sesuaikan dengan config JWT kamu
             'user'          => [
-                'id'    => $user['id'],
+                'id'    => (int)$user['id'], // Type casting ke integer
+                'name'  => $user['name'],   // Tambahkan field nama
                 'email' => $user['email'],
                 'role'  => $user['role']
             ]

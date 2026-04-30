@@ -18,6 +18,10 @@ class CreateApiKeysTable extends Migration
                 'type'       => 'VARCHAR',
                 'constraint' => 100,
             ],
+            'store_id' => [
+                'type'       => 'INT',
+                'unsigned'   => true,
+            ],
             'key_label' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 100,
@@ -25,6 +29,11 @@ class CreateApiKeysTable extends Migration
             'api_key' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
+            ],
+            'device_id' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 255,
+                'null'       => true,
             ],
             'ip_whitelist' => [
                 'type'       => 'TEXT',
@@ -56,6 +65,7 @@ class CreateApiKeysTable extends Migration
         ]);
 
         $this->forge->addKey('id', true);
+        $this->forge->addForeignKey('store_id', 'store', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('api_keys');
 
         // Menyesuaikan default CURRENT_TIMESTAMP sesuai dump SQL Anda
