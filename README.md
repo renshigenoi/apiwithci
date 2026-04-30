@@ -11,13 +11,13 @@ Aplikasi Dashboard API Log yang dibangun menggunakan **CodeIgniter 4**. Proyek i
 ---
 
 ## 🚀 Fitur Utama & Keamanan
--**📊 Visualisasi Data Dinamis**: Integrasi Chart.js (Bar, Line, & Doughnut) untuk pemantauan statistik akses API secara real-time.
--**🔐 Dual-Layer Authentication**: Proteksi berlapis menggunakan JWT dan X-API-KEY untuk memastikan keamanan identitas pengguna sekaligus perangkat.
--**📱 Device Binding Technology**: Sistem lisensi yang memungkinkan penguncian akses API khusus untuk perangkat tertentu (Hardware Locking).
--**🏢 Multi-Tenant Store Management**: Manajemen cabang terpusat dengan isolasi data total antar toko, siap untuk ekspansi skala besar.
--**🛠️ Deep Log & Audit Trail**: Monitoring aktivitas API mendalam, mencatat siapa, kapan, dan dari perangkat mana sebuah aksi dilakukan.
--**🌙 UI/UX Modern & Adaptif**: Antarmuka responsif dengan dukungan Dark Mode otomatis untuk efisiensi kerja di berbagai kondisi cahaya.
--**📧 Integrasi Notifikasi Multichannel**: Sistem peringatan otomatis melalui SMTP Gmail, Slack, dan Telegram Webhook.
+- **📊 Visualisasi Data Dinamis**: Integrasi Chart.js (Bar, Line, & Doughnut) untuk pemantauan statistik akses API secara real-time.
+- **🔐 Dual-Layer Authentication**: Proteksi berlapis menggunakan JWT dan X-API-KEY untuk memastikan keamanan identitas pengguna sekaligus perangkat.
+- **📱 Device Binding Technology**: Sistem lisensi yang memungkinkan penguncian akses API khusus untuk perangkat tertentu (Hardware Locking).
+- **🏢 Multi-Tenant Store Management**: Manajemen cabang terpusat dengan isolasi data total antar toko, siap untuk ekspansi skala besar.
+- **🛠️ Deep Log & Audit Trail**: Monitoring aktivitas API mendalam, mencatat siapa, kapan, dan dari perangkat mana sebuah aksi dilakukan.
+- **🌙 UI/UX Modern & Adaptif**: Antarmuka responsif dengan dukungan Dark Mode otomatis untuk efisiensi kerja di berbagai kondisi cahaya.
+- **📧 Integrasi Notifikasi Multichannel**: Sistem peringatan otomatis melalui SMTP Gmail, Slack, dan Telegram Webhook.
 
 ---
 
