@@ -169,7 +169,7 @@ class AuthController extends ResourceController
         // 3. AMBIL ROLE DARI TABEL AKSES TOKO
         // Kita cek role user di toko spesifik yang dia tuju
         $db = \Config\Database::connect();
-        $access = $db->table('store_access') // Ganti sesuai nama tabel akses toko Kakak
+        $access = $db->table('store_users') // Ganti sesuai nama tabel akses toko Kakak
                     ->where('user_id', $user['id'])
                     ->where('store_id', $store_id)
                     ->get()
