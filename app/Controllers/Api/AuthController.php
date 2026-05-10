@@ -145,7 +145,6 @@ class AuthController extends ResourceController
         $json       = $this->request->getJSON(true);
         $email      = $json['email'] ?? '';
         $password   = $json['password'] ?? '';
-        $store_id   = $json['store_id'] ?? ''; // Tambahkan input store_id
 
         $userModel  = new UserModel();
         $user       = $userModel->where('email', $email)->first();
@@ -166,25 +165,55 @@ class AuthController extends ResourceController
             ])->setStatusCode(403);
         }
 
-        // 3. AMBIL ROLE DARI TABEL AKSES TOKO
-        // Kita cek role user di toko spesifik yang dia tuju
+        // 3. Ambil Daftar Toko yang bisa diakses user ini
         $db = \Config\Database::connect();
-        $access = $db->table('store_users') // Ganti sesuai nama tabel akses toko Kakak
-                    ->where('user_id', $user['id'])
-                    ->where('store_id', $store_id)
-                    ->get()
-                    ->getRowArray();
+        $availableStores = $db->table('store_users as su')
+                            ->select('s.id, s.name, su.role')
+                            ->join('store as s', 's.id = su.store_id')
+                            ->where('su.user_id', $user['id'])
+                            ->get()
+                            ->getResultArray();
 
-        if (!$access) {
+        if (empty($availableStores)) {
             return $this->response->setJSON([
-                'status'    => 'error',
-                'message'   => 'Anda tidak memiliki akses ke toko/grup ini'
+                'status'  => 'error',
+                'message' => 'Akun Anda tidak terhubung ke toko manapun'
             ])->setStatusCode(403);
         }
 
-        // 4. Generate Token (Pastikan role hasil query tadi ikut masuk ke payload)
-        // Kakak bisa sesuaikan fungsi generateAccessToken agar menerima parameter role
-        $accessToken    = $this->generateAccessTokenExternal($user, $access['role'], $store_id);
+        // 4. Return ke Laravel untuk dipilih
+        return $this->response->setJSON([
+            'status'  => 'success',
+            'message' => 'Kredensial benar, silakan pilih toko',
+            'user'    => [
+                'id'    => $user['id'],
+                'name'  => $user['name']
+            ],
+            'stores'  => $availableStores // Array daftar toko untuk dropdown di Laravel
+        ]);
+    }
+
+    public function apiExternalLoginFinal()
+    {
+        $json       = $this->request->getJSON(true);
+        $userId     = $json['user_id'];
+        $storeId    = $json['store_id'];
+
+        // Ambil role spesifik di toko tersebut
+        $db         = \Config\Database::connect();
+        $access     = $db->table('store_users')
+                    ->where('user_id', $userId)
+                    ->where('store_id', $storeId)
+                    ->get()
+                    ->getRowArray();
+
+        if (!$access) return $this->failForbidden();
+
+        $userModel  = new UserModel();
+        $user       = $userModel->find($userId);
+
+        // Sekarang baru buat token dengan ROLE dan STORE_ID yang sudah fix
+        $accessToken    = $this->generateAccessTokenExternal($user, $access['role'], $storeId);
         $refreshToken   = $this->generateRefreshToken($user);
 
         return $this->response->setJSON([
@@ -199,7 +228,7 @@ class AuthController extends ResourceController
                 'name'     => $user['name'],
                 'email'    => $user['email'],
                 'role'     => $access['role'], // Ambil dari tabel akses, bukan tabel user
-                'store_id' => (int)$store_id
+                'store_id' => (int)$storeId
             ]
         ]);
     }
