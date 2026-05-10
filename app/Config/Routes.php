@@ -15,6 +15,7 @@ $routes->get('/reset-password/(:any)', 'Home::reset/$1');
 $routes->group('api/v1', function($routes) {
     // Auth (tanpa JWT filter)
     $routes->post('login', 'Api\AuthController::login');
+    $routes->post('checklogin', 'Api\AuthController::loginExternal');
     $routes->post('forgot-password', 'Api\AuthController::forgotPassword');
     $routes->post('update-password', 'Api\AuthController::updatePassword');
 

@@ -29,6 +29,29 @@ class AuthController extends ResourceController
         return JWT::encode($payload, $secretKey, 'HS256');
     }
 
+    private function generateAccessTokenExternal($user, $role, $store_id)
+    {
+        $issuedAt   = time();
+        $expireAt   = $issuedAt + 3600; // 1 jam
+
+        $payload    = [
+            'iss'       => 'apici',        // issuer
+            'iat'       => $issuedAt,      // issued at
+            'nbf'       => $issuedAt,      // not before
+            'exp'       => $expireAt,      // expired at
+            'data'      => [
+                'id'       => $user['id'],
+                'email'    => $user['email'],
+                'name'     => $user['name'],
+                'role'     => $role,      // <-- GUNAKAN $role dari parameter (tabel akses)
+                'store_id' => $store_id,  // <-- WAJIB MASUK agar Laravel tahu toko mana yang aktif
+            ]
+        ];
+        // Pastikan secret key terambil dengan benar
+        $secretKey = env('jwt.secret') ?? 'kunci_cadangan_jika_env_kosong'; 
+        return JWT::encode($payload, $secretKey, 'HS256');
+    }
+
     private function generateStoreToken($user, $storeId)
     {
         $issuedAt   = time();
@@ -112,6 +135,71 @@ class AuthController extends ResourceController
                 'name'  => $user['name'],   // Tambahkan field nama
                 'email' => $user['email'],
                 'role'  => $user['role']
+            ]
+        ]);
+    }
+
+    public function apiExternalLogin()
+    {
+        // Menggunakan getJSON karena biasanya Laravel Http::post mengirim data sebagai JSON
+        $json       = $this->request->getJSON(true);
+        $email      = $json['email'] ?? '';
+        $password   = $json['password'] ?? '';
+        $store_id   = $json['store_id'] ?? ''; // Tambahkan input store_id
+
+        $userModel  = new UserModel();
+        $user       = $userModel->where('email', $email)->first();
+
+        // 1. Cek User & Password
+        if (!$user || !password_verify($password, $user['password'])) {
+            return $this->response->setJSON([
+                'status'    => 'error',
+                'message'   => 'Email atau password salah'
+            ])->setStatusCode(401);
+        }
+
+        // 2. Cek Status Aktif
+        if ($user['is_active'] != 1) {
+            return $this->response->setJSON([
+                'status'    => 'error',
+                'message'   => 'Akun Anda tidak aktif'
+            ])->setStatusCode(403);
+        }
+
+        // 3. AMBIL ROLE DARI TABEL AKSES TOKO
+        // Kita cek role user di toko spesifik yang dia tuju
+        $db = \Config\Database::connect();
+        $access = $db->table('store_access') // Ganti sesuai nama tabel akses toko Kakak
+                    ->where('user_id', $user['id'])
+                    ->where('store_id', $store_id)
+                    ->get()
+                    ->getRowArray();
+
+        if (!$access) {
+            return $this->response->setJSON([
+                'status'    => 'error',
+                'message'   => 'Anda tidak memiliki akses ke toko/grup ini'
+            ])->setStatusCode(403);
+        }
+
+        // 4. Generate Token (Pastikan role hasil query tadi ikut masuk ke payload)
+        // Kakak bisa sesuaikan fungsi generateAccessToken agar menerima parameter role
+        $accessToken    = $this->generateAccessTokenExternal($user, $access['role'], $store_id);
+        $refreshToken   = $this->generateRefreshToken($user);
+
+        return $this->response->setJSON([
+            'status'        => 'success',
+            'message'       => 'Authentication successful',
+            'access_token'  => $accessToken,
+            'refresh_token' => $refreshToken,
+            'token_type'    => 'Bearer',
+            'expires_in'    => 3600,
+            'user'          => [
+                'id'       => (int)$user['id'],
+                'name'     => $user['name'],
+                'email'    => $user['email'],
+                'role'     => $access['role'], // Ambil dari tabel akses, bukan tabel user
+                'store_id' => (int)$store_id
             ]
         ]);
     }
