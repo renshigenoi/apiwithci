@@ -171,7 +171,7 @@ class AuthController extends ResourceController
         $db = \Config\Database::connect();
         $access = $db->table('store_users') // Ganti sesuai nama tabel akses toko Kakak
                     ->where('user_id', $user['id'])
-                    ->where('store_id', $store_id)
+                    // ->where('store_id', $store_id)
                     ->get()
                     ->getRowArray();
 
