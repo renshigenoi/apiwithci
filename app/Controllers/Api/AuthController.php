@@ -187,7 +187,9 @@ class AuthController extends ResourceController
             'message' => 'Kredensial benar, silakan pilih toko',
             'user'    => [
                 'id'    => $user['id'],
-                'name'  => $user['name']
+                'name'  => $user['name'],
+                'email' => $user['email'],
+                'role'  => $user['role']
             ],
             'stores'  => $availableStores // Array daftar toko untuk dropdown di Laravel
         ]);
