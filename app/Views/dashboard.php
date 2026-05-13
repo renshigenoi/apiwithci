@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Panel | API Management</title>
+  <link rel="shortcut icon" href="<?= base_url('abekz.png') ?>">
   <link rel="stylesheet" href="<?= base_url('css/dashboard.css?v=1.0.2') ?>">
   <link rel="stylesheet" href="<?= base_url('tailwindcss/output.css') ?>">
   <link rel="stylesheet" href="<?= base_url('sweetalert/sweetalert2.min.css') ?>">

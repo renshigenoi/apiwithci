@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Reset Password | API Admin Panel</title>
-  <link rel="stylesheet" href="<?= base_url('css/dashboard.css?v=1.0.1') ?>">
+  <link rel="shortcut icon" href="<?= base_url('abekz.png') ?>">
+  <link rel="stylesheet" href="<?= base_url('css/dashboard.css?v=1.0.2') ?>">
   <link rel="stylesheet" href="<?= base_url('tailwindcss/output.css') ?>">
   <link rel="stylesheet" href="<?= base_url('sweetalert/sweetalert2.min.css') ?>">
   <script src="<?= base_url('js/header.js?v=1.0') ?>"></script>
@@ -53,6 +54,6 @@
         </p>
     </div>
   </div>
-  <script src="<?= base_url('js/forget.js?v=1.0.1') ?>"></script>
+  <script src="<?= base_url('js/forget.js?v=1.0.2') ?>"></script>
 </body>
 </html>
