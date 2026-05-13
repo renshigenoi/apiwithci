@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Panel | API Management</title>
-  <link rel="stylesheet" href="<?= base_url('css/dashboard.css?v=1.0.1') ?>">
+  <link rel="stylesheet" href="<?= base_url('css/dashboard.css?v=1.0.2') ?>">
   <link rel="stylesheet" href="<?= base_url('tailwindcss/output.css') ?>">
   <link rel="stylesheet" href="<?= base_url('sweetalert/sweetalert2.min.css') ?>">
   <script src="<?= base_url('sweetalert/sweetalert2.all.min.js') ?>"></script>
@@ -46,7 +46,7 @@
   </button>
 
   <script src="<?= base_url('js/main.js?v=1.0') ?>"></script>
-  <script type="module" src="<?= base_url('js/dashboard.js?v=1.0.1') ?>"></script>
-  <script type="module" src="<?= base_url('js/users.js?v=1.0.1') ?>"></script>
+  <script type="module" src="<?= base_url('js/dashboard.js?v=1.0.2') ?>"></script>
+  <script type="module" src="<?= base_url('js/users.js?v=1.0.2') ?>"></script>
 </body>
 </html>
