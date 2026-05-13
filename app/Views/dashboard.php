@@ -14,15 +14,18 @@
 </head>
 <body class="bg-[#f8fafc] text-gray-900 antialiased">
 
-  <div class="lg:hidden bg-gray-900 text-white p-4 flex justify-between items-center sticky top-0 z-[100] shadow-md">
-    <div class="h-16 flex items-center px-6 text-2xl font-bold border-b border-gray-800 shrink-0">
-      <div class="bg-blue-600 p-1.5 rounded-lg mr-3">
-        <i data-feather="zap" class="w-5 h-5 text-white"></i>
+  <div class="lg:hidden bg-gray-900/95 backdrop-blur-sm text-white p-3 flex justify-between items-center sticky top-0 z-[100] shadow-lg border-b border-gray-800">
+    <div class="flex items-center gap-3">
+      <div class="p-1 bg-gray-800 rounded-lg shadow-inner">
+        <img src="<?= base_url('abekz.png') ?>" class="w-10 h-10 object-contain">
       </div>
-      <a href="#" class="cursor-pointer" onclick="showSection('dashboardSection')"><span class="text-white tracking-tight">My API</span></a>
+      <a href="#" class="flex flex-col" onclick="showSection('dashboardSection')">
+        <span class="text-lg font-bold leading-none tracking-tight">My API</span>
+        <span class="text-[10px] text-cyan-400 font-medium uppercase tracking-widest mt-1">by Abekz Comp</span>
+      </a>
     </div>
-    <button onclick="toggleSidebar()" class="cursor-pointer p-2 hover:bg-gray-800 rounded-xl transition-all">
-      <i data-feather="menu"></i>
+    <button onclick="toggleSidebar()" class="p-2.5 hover:bg-gray-800 active:scale-95 rounded-xl transition-all border border-gray-800 shadow-sm">
+      <i data-feather="menu" class="w-6 h-6 text-gray-300"></i>
     </button>
   </div>
 

@@ -21,9 +21,7 @@
       <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl"></div>
       <div class="relative z-10">
         <div class="flex items-center space-x-3 mb-10">
-          <div class="bg-blue-600 p-2 rounded-xl shadow-lg shadow-blue-500/40">
-            <i data-feather="zap" class="w-6 h-6 text-white"></i>
-          </div>
+          <img src="<?= base_url('abekz.png') ?>" class="w-16 h-16">
           <span class="text-xl font-black text-gray-900 dark:text-white tracking-tighter">API PANEL</span>
         </div>
         <div class="mb-8">
