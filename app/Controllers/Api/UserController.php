@@ -50,6 +50,7 @@ class UserController extends Controller
             // A. Update data profil utama
             $userData = [
                 'name'  => $json['name'],
+                'email' => $json['email'],
                 'role'  => $json['role'] ?? 'user',
             ];
             // Hanya update password jika diisi
@@ -85,75 +86,74 @@ class UserController extends Controller
         }
     }
 
-public function create()
-{
-    $payload = Services::jwtPayload()->get();
-    if (!$payload || ($payload['role'] ?? 'guest') !== 'superadmin') {
-        return $this->failForbidden('Unauthorized');
-    }
-
-    $json = $this->request->getJSON(true);
-    
-    if (empty($json['email']) || empty($json['password'])) {
-        return $this->fail('Email dan password wajib diisi.');
-    }
-
-    $userModel      = new UserModel();
-    $storeUserModel = new StoreUserModel();
-    $db             = \Config\Database::connect();
-
-    if ($userModel->where('email', $json['email'])->first()) {
-        return $this->fail('Email sudah terdaftar. Silakan gunakan email lain.');
-    }
-
-    $db->transBegin();
-    try {
-        // A. Simpan ke tabel users
-        $userData = [
-            'name'      => $json['name'],
-            'email'     => $json['email'],
-            'password'  => password_hash($json['password'], PASSWORD_DEFAULT),
-            'role'      => $json['role'] ?? 'user',
-            'is_active' => 1
-        ];
-
-        if (!$userModel->insert($userData)) {
-            $db->transRollback();
-            return $this->fail($userModel->errors());
+    public function create()
+    {
+        $payload = Services::jwtPayload()->get();
+        if (!$payload || ($payload['role'] ?? 'guest') !== 'superadmin') {
+            return $this->failForbidden('Unauthorized');
         }
 
-        $newUserId = $userModel->getInsertID();
+        $json = $this->request->getJSON(true);
+        if (empty($json['email']) || empty($json['password'])) {
+            return $this->fail('Email dan password wajib diisi.');
+        }
 
-        // B. PERBAIKAN DI SINI: Loop array 'stores' dari JavaScript
-        if (!empty($json['stores']) && is_array($json['stores'])) {
-            foreach ($json['stores'] as $s) {
-                $storeData = [
-                    'user_id'    => $newUserId,
-                    'store_id'   => $s['store_id'],
-                    'role'       => $s['role_in_store'] ?? 'staff',
-                    'is_default' => (int)($s['is_default'] ?? 0) // <--- AMBIL DARI PAYLOAD
-                ];
+        $userModel      = new UserModel();
+        $storeUserModel = new StoreUserModel();
+        $db             = \Config\Database::connect();
 
-                if (!$storeUserModel->insert($storeData)) {
-                    $db->transRollback();
-                    return $this->fail($storeUserModel->errors());
+        if ($userModel->where('email', $json['email'])->first()) {
+            return $this->fail('Email sudah terdaftar. Silakan gunakan email lain.');
+        }
+
+        $db->transBegin();
+        try {
+            // A. Simpan ke tabel users
+            $userData = [
+                'name'      => $json['name'],
+                'email'     => $json['email'],
+                'password'  => password_hash($json['password'], PASSWORD_DEFAULT),
+                'role'      => $json['role'] ?? 'user',
+                'is_active' => 1
+            ];
+
+            if (!$userModel->insert($userData)) {
+                $db->transRollback();
+                return $this->fail($userModel->errors());
+            }
+
+            $newUserId = $userModel->getInsertID();
+
+            // B. PERBAIKAN DI SINI: Loop array 'stores' dari JavaScript
+            if (!empty($json['stores']) && is_array($json['stores'])) {
+                foreach ($json['stores'] as $s) {
+                    $storeData = [
+                        'user_id'    => $newUserId,
+                        'store_id'   => $s['store_id'],
+                        'role'       => $s['role_in_store'] ?? 'staff',
+                        'is_default' => (int)($s['is_default'] ?? 0) // <--- AMBIL DARI PAYLOAD
+                    ];
+
+                    if (!$storeUserModel->insert($storeData)) {
+                        $db->transRollback();
+                        return $this->fail($storeUserModel->errors());
+                    }
                 }
             }
+
+            $db->transCommit();
+            return $this->respondCreated([
+                'status'  => 'success',
+                'message' => 'User dan akses toko berhasil dibuat.',
+                'data'    => ['id' => $newUserId]
+            ]);
+
+        } catch (\Exception $e) {
+            $db->transRollback();
+            log_message('error', '[CreateUser] Error: ' . $e->getMessage());
+            return $this->failServerError('Terjadi kesalahan pada server.');
         }
-
-        $db->transCommit();
-        return $this->respondCreated([
-            'status'  => 'success',
-            'message' => 'User dan akses toko berhasil dibuat.',
-            'data'    => ['id' => $newUserId]
-        ]);
-
-    } catch (\Exception $e) {
-        $db->transRollback();
-        log_message('error', '[CreateUser] Error: ' . $e->getMessage());
-        return $this->failServerError('Terjadi kesalahan pada server.');
     }
-}
 
     public function detail($id = null)
     {

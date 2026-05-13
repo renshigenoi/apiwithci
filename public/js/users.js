@@ -118,6 +118,7 @@ const saveUser = async () => {
     const name     = document.getElementById('storeUserName').value;
     const email    = document.getElementById('storeUserEmail').value;
     const password = document.getElementById('storeUserPassword').value;
+    const role     = document.getElementById('storeUserRole').value;
     // Ambil data dari baris toko
     const stores = [];
     document.querySelectorAll('#storeListContainer > div').forEach(row => {
@@ -140,7 +141,7 @@ const saveUser = async () => {
     const payload = {
         name,
         email,
-        role: 'user', // Default role untuk toko
+        role, // Default role untuk toko
         stores
     };
 
